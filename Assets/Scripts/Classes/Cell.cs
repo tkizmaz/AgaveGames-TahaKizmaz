@@ -24,7 +24,6 @@ public class Cell : MonoBehaviour
     {
         if (currentTile == null)
         {
-            Debug.LogError("Trying to remove a tile from an empty cell!");
             return;
         }
         GridManager.Instance.ReturnTileToPool(currentTile);

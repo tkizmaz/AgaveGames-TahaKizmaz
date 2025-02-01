@@ -154,8 +154,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2241ada35c1394b03a55abe1c2495f15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rowCount: 5
-  columnCount: 5
+  rowCount: 8
+  columnCount: 8
   cellPrefab: {fileID: 3049782961100168222, guid: 18c2a257a0ca04dbda8094feaf089a55, type: 3}
   tilePrefab: {fileID: 4185672354044982846, guid: e531669ab84744675b7deb5c7b6269eb, type: 3}
   paddingPercentage: 0.05
