@@ -152,18 +152,14 @@ public class GridManager : MonoBehaviour
 
     private void CreateTile(Cell cell, bool isInitial = false)
     {
-        int enumSize = System.Enum.GetNames(typeof(TileColor)).Length;
-        TileColor randomColor = (TileColor)UnityEngine.Random.Range(0, enumSize);
-
         Vector3 spawnPosition = isInitial ? cell.transform.position : new Vector3(cell.transform.position.x, cell.transform.position.y + 1.5f, 0);
-        
         Tile tile = tilePool.GetFromPool();
         tile.transform.position = spawnPosition;
         tile.transform.localScale = sizeModifier;
 
         cell.SetTile(tile);
         tile.SpawnObject();
-
+        
         if (!isInitial)
         {
             tile.MoveToCell(cell);

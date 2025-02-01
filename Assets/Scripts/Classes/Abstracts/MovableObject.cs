@@ -10,7 +10,7 @@ public abstract class MovableObject : MonoBehaviour, IPoolable
     public virtual void MoveToCell(Cell targetCell)
     {
         Vector3 newPosition = GridManager.Instance.GetWorldPositionFromGridPosition(targetCell.GridPosition);
-        transform.DOMove(newPosition, 0.3f).SetEase(Ease.OutBounce);
+        transform.DOMove(newPosition, 1f).SetEase(Ease.OutBounce);
     }
 
     public virtual void OnSpawnFromPool()
