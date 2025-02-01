@@ -7,16 +7,17 @@ public class GameManager : Singleton<GameManager>
     private TileColor targetColor;
     private int currentMoves;
     private int collectedTiles;
+    public GameState CurrentState { get; private set; }
 
     protected override void Awake()
     {
         base.Awake();
     }
-
     private void Start()
     {
         InitializeTarget();
         ResetGame();
+        ChangeState(GameState.WaitingForInput);
     }
 
     private void OnEnable()
@@ -58,8 +59,7 @@ public class GameManager : Singleton<GameManager>
 
             if (collectedTiles >= targetCount)
             {
-                Debug.Log("Game Won!");
-                GameEvents.OnGameWon?.Invoke();
+                ChangeState(GameState.GameWon);
             }
         }
     }
@@ -71,8 +71,20 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnMoveMade?.Invoke(currentMoves);
         if (currentMoves <= 0)
         {
-            Debug.Log("Game Lost!");
-            GameEvents.OnGameLost?.Invoke();
+            ChangeState(GameState.GameOver);
         }
+    }
+
+    public void ChangeState(GameState newState)
+    {
+        if (CurrentState == GameState.GameWon || CurrentState == GameState.GameOver)
+        {
+            return;
+        }
+        
+        if (CurrentState == newState) return;
+
+        CurrentState = newState;
+        GameEvents.OnGameStateChanged?.Invoke(newState);
     }
 }

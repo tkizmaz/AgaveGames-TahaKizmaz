@@ -5,7 +5,6 @@ using UnityEngine;
 public class LinkManager : MonoBehaviour
 {
     private List<Cell> linkedCells = new List<Cell>();
-    private bool isLinking = false;
     private Camera mainCamera;
     private Cell lastHoveredCell;
 
@@ -16,16 +15,17 @@ public class LinkManager : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        GameState gameState = GameManager.Instance.CurrentState;
+        if(Input.GetMouseButtonDown(0) && gameState == GameState.WaitingForInput)
         {
             StartLinking();
         }
-        else if(Input.GetMouseButton(0) && isLinking)
+        else if(Input.GetMouseButton(0) && gameState == GameState.Linking)
         {
             TryAddTileToLink(); 
         }
 
-        else if(Input.GetMouseButtonUp(0) && isLinking)
+        else if(Input.GetMouseButtonUp(0) && gameState == GameState.Linking)
         {
             FinishLinking();
         }
@@ -33,6 +33,7 @@ public class LinkManager : MonoBehaviour
 
     private void StartLinking()
     {
+        Debug.Log("Start Linking");
         linkedCells.Clear();
         Cell firstCell = GetSelectedCell();
 
@@ -40,7 +41,11 @@ public class LinkManager : MonoBehaviour
         {
             linkedCells.Add(firstCell);
             lastHoveredCell = firstCell;
-            isLinking = true;
+            GameManager.Instance.ChangeState(GameState.Linking);
+        }
+        else
+        {
+            GameManager.Instance.ChangeState(GameState.WaitingForInput);
         }
     }
 
@@ -80,7 +85,6 @@ public class LinkManager : MonoBehaviour
 
     private void FinishLinking()
     {
-        isLinking = false;
         if(linkedCells.Count >= 3)
         {
             List<int> columnIndexes = new List<int>();
