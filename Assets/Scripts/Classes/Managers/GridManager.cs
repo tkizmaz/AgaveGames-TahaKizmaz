@@ -72,6 +72,7 @@ public class GridManager : Singleton<GridManager>
     private Cell InstantiateCell(Vector2Int gridPosition, Vector2 worldPosition, float tileSize)
     {
         GameObject cellObj = Instantiate(cellPrefab, worldPosition, Quaternion.identity);
+        cellObj.transform.SetParent(transform);
         Cell cell = cellObj.GetComponent<Cell>();
 
         if (cell != null)
