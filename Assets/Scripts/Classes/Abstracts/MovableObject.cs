@@ -5,7 +5,7 @@ using DG.Tweening;
 
 public abstract class MovableObject : MonoBehaviour, IPoolable
 {
-    public abstract void SpawnObject(); // Her nesne kendine özgü spawn olacak
+    public abstract void SpawnObject();
 
     public virtual void MoveToCell(Cell targetCell)
     {
