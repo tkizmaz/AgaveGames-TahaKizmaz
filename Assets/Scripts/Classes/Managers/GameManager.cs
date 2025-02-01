@@ -77,14 +77,10 @@ public class GameManager : Singleton<GameManager>
 
     public void ChangeState(GameState newState)
     {
-        if (CurrentState == GameState.GameWon || CurrentState == GameState.GameOver)
-        {
-            return;
-        }
+        if (CurrentState == newState || CurrentState == GameState.GameWon || CurrentState == GameState.GameOver) return;
         
-        if (CurrentState == newState) return;
-
         CurrentState = newState;
         GameEvents.OnGameStateChanged?.Invoke(newState);
     }
+
 }
