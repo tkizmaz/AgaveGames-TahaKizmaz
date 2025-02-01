@@ -86,14 +86,15 @@ public class LinkManager : MonoBehaviour
             List<int> columnIndexes = new List<int>();
             foreach(Cell cell in linkedCells)
             {
+                GameEvents.OnTileDestroyed?.Invoke(cell.CurrentTile);
                 cell.RemoveCurrentTile();
                 if(!columnIndexes.Contains(cell.GridPosition.x))
                 {
                     columnIndexes.Add(cell.GridPosition.x);
                 }
             }
-
             GridManager.Instance.DropTiles(columnIndexes);
+            GameManager.Instance.OnMoveMade();
         }
         else
         {
