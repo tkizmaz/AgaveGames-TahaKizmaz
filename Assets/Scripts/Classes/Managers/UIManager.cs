@@ -1,12 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+using UnityEngine.SceneManagement;
 public class UIManager : Singleton<UIManager>
 {
     [SerializeField] private TMP_Text movesValueText; 
     [SerializeField] private TMP_Text targetTileCountText; 
+    [SerializeField] private TMP_Text endGameText;
     [SerializeField] private Image targetTileImage; 
+    [SerializeField] private GameObject gameOverPanel;
 
     protected override void Awake()
     {
@@ -18,6 +20,8 @@ public class UIManager : Singleton<UIManager>
         GameEvents.OnMoveMade += UpdateMovesUI;
         GameEvents.OnTargetTileChanged += SetTargetUI;
         GameEvents.OnTargetTileCountChanged += UpdateTargetTileCount; 
+        GameEvents.OnGameStateChanged += OnGameStateChanged;
+
     }
 
     private void OnDisable()
@@ -47,4 +51,19 @@ public class UIManager : Singleton<UIManager>
         targetTileCountText.text = remainingTargetCount < 0 ? "0" : remainingTargetCount.ToString();
     }
 
+    private void OnGameStateChanged(GameState state)
+    {
+        Debug.Log("Game State Changed: " + state);
+        if (state == GameState.GameOver || state == GameState.GameWon)
+        {
+            gameOverPanel.SetActive(true);
+        }
+        string endGameInformation = state == GameState.GameOver ? "Game Over" : "You Win!";
+        endGameText.text = endGameInformation;
+    }
+
+    public void OnRestartButtonClicked()
+    {
+        SceneManager.LoadScene(0);
+    }
 }
