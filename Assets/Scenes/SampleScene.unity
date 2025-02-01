@@ -287,7 +287,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxMoves: 10
-  targetCount: 20
+  targetCount: 10
 --- !u!4 &469886297
 Transform:
   m_ObjectHideFlags: 0
@@ -313,7 +313,6 @@ GameObject:
   m_Component:
   - component: {fileID: 519216512}
   - component: {fileID: 519216511}
-  - component: {fileID: 519216513}
   - component: {fileID: 519216514}
   - component: {fileID: 519216515}
   m_Layer: 0
@@ -355,22 +354,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &519216513
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 519216510}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd0ee597b581947179125ec5bc990033, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  red: {fileID: 21300000, guid: 698c9d6373512444b887849417145a7f, type: 3}
-  blue: {fileID: 21300000, guid: d7ab4db687f574b2c9fa3ebb5cf506d0, type: 3}
-  yellow: {fileID: 21300000, guid: 5ff84a412feae49d8a2eaa877f1591bc, type: 3}
-  green: {fileID: 21300000, guid: e0a1804bbd8bf482d9efa963290e0726, type: 3}
 --- !u!114 &519216514
 MonoBehaviour:
   m_ObjectHideFlags: 0

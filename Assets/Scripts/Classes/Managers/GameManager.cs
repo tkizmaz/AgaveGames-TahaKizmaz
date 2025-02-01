@@ -61,6 +61,7 @@ public class GameManager : MonoBehaviour
 
             if (collectedTiles >= targetCount)
             {
+                Debug.Log("Game Won!");
                 GameEvents.OnGameWon?.Invoke();
             }
         }
@@ -73,6 +74,7 @@ public class GameManager : MonoBehaviour
         GameEvents.OnMoveMade?.Invoke(currentMoves);
         if (currentMoves <= 0)
         {
+            Debug.Log("Game Lost!");
             GameEvents.OnGameLost?.Invoke();
         }
     }
