@@ -4,7 +4,7 @@ public class Tile : MovableObject
 {
     [SerializeField]
     private TileData tileData;
-    public TileData TileData => tileData; // Tile'ın verilerine dışarıdan erişilebilir yap
+    public TileData TileData => tileData;
     private SpriteRenderer spriteRenderer;
 
     private void Awake() 
