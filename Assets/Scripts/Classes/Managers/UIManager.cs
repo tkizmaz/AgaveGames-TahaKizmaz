@@ -12,7 +12,7 @@ public class UIManager : Singleton<UIManager>
     {
         base.Awake();
     }
-    
+
     private void OnEnable()
     {
         GameEvents.OnMoveMade += UpdateMovesUI;
@@ -44,7 +44,7 @@ public class UIManager : Singleton<UIManager>
 
     private void UpdateTargetTileCount(int remainingTargetCount)
     {
-        targetTileCountText.text = remainingTargetCount.ToString();
+        targetTileCountText.text = remainingTargetCount < 0 ? "0" : remainingTargetCount.ToString();
     }
 
 }
