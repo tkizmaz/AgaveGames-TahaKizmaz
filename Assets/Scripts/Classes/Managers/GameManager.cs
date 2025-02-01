@@ -1,19 +1,16 @@
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
-    public static GameManager Instance;
-
     [SerializeField] private int maxMoves = 10;
     [SerializeField] public int targetCount = 20;
     private TileColor targetColor;
     private int currentMoves;
     private int collectedTiles;
 
-    private void Awake()
+    protected override void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        base.Awake();
     }
 
     private void Start()

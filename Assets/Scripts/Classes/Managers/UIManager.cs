@@ -2,12 +2,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class UIManager : MonoBehaviour
+public class UIManager : Singleton<UIManager>
 {
     [SerializeField] private TMP_Text movesValueText; 
     [SerializeField] private TMP_Text targetTileCountText; 
     [SerializeField] private Image targetTileImage; 
 
+    protected override void Awake()
+    {
+        base.Awake();
+    }
+    
     private void OnEnable()
     {
         GameEvents.OnMoveMade += UpdateMovesUI;

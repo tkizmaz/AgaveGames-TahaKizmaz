@@ -4,10 +4,8 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class GridManager : MonoBehaviour
+public class GridManager : Singleton<GridManager>
 {
-    private static GridManager instance;
-    public static GridManager Instance { get => instance; }
     [SerializeField] private int rowCount = 5;
     [SerializeField] private int columnCount = 5;
     [SerializeField] private GameObject cellPrefab; 
@@ -17,16 +15,9 @@ public class GridManager : MonoBehaviour
     private Cell[,] grid; 
     ObjectPool<Tile> tilePool;
 
-    private void Awake() 
+    protected override void Awake()
     {
-        if(instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        base.Awake();
     }
 
     void Start()
