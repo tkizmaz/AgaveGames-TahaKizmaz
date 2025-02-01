@@ -70,7 +70,7 @@ public class LinkManager : MonoBehaviour
             if(!linkedCells.Contains(newCell))
             {
                 Cell lastCell = linkedCells[linkedCells.Count - 1];
-                if(CheckIfTilesAreNeighbors(lastCell, newCell) && lastCell.CurrentTile.TileColor == newCell.CurrentTile.TileColor)
+                if(CheckIfTilesAreNeighbors(lastCell, newCell) && lastCell.CurrentTile.TileData.tileColor == newCell.CurrentTile.TileData.tileColor)
                 {
                     linkedCells.Add(newCell);
                 }
