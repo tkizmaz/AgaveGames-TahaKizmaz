@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class ObjectPool<T> where T : MonoBehaviour, IPoolable
 {
-    private Queue<T> pool = new Queue<T>();  // Havuzdaki nesneleri saklar
-    private T prefab;  // Nesnenin orijinal prefab'ı
-    private Transform parentTransform;  // Nesneleri organize etmek için bir parent
+    private Queue<T> pool = new Queue<T>(); 
+    private T prefab;
+    private Transform parentTransform;
 
     public ObjectPool(T prefab, int initialSize, Transform parent = null)
     {
@@ -33,13 +33,13 @@ public class ObjectPool<T> where T : MonoBehaviour, IPoolable
         }
 
         obj.gameObject.SetActive(true);
-        obj.OnSpawnFromPool();  // Pooldan çekildiğinde çağrılır
+        obj.OnSpawnFromPool();
         return obj;
     }
 
     public void ReturnToPool(T obj)
     {
-        obj.OnReturnToPool();  // Poola geri gönderildiğinde çağrılır
+        obj.OnReturnToPool();
         obj.gameObject.SetActive(false);
         pool.Enqueue(obj);
     }
