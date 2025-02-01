@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Tile : MovableObject
@@ -12,22 +13,27 @@ public class Tile : MovableObject
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    public void SetTileData(TileData tileData)
-    {
-        this.tileData = tileData;
-        spriteRenderer.sprite = tileData.tileSprite;
-    }
-
-    public override void SpawnObject()
+    public override void SpawnObject(bool shouldMoveOnSpawn = false, Cell targetCell = null, Action OnComplete = null)
     {
         TileColor randomColor = (TileColor)UnityEngine.Random.Range(0, System.Enum.GetNames(typeof(TileColor)).Length);
-
         TileData selectedData = TileDatabase.Instance.GetTileDataByColor(randomColor);
 
         if (selectedData != null)
         {
-            SetTileData(selectedData);
+            tileData = selectedData;
+            spriteRenderer.sprite = tileData.tileSprite;
         }
+
         spriteRenderer.sortingOrder = 1;
+
+        if (shouldMoveOnSpawn && targetCell != null)
+        {
+            MoveToCell(targetCell, OnComplete);
+        }
+    }
+
+    public override void OnSpawnFromPool()
+    {
+        SpawnObject();
     }
 }

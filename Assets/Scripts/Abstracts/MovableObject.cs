@@ -6,10 +6,12 @@ using System;
 
 public abstract class MovableObject : MonoBehaviour, IPoolable
 {
-    public abstract void SpawnObject();
+    public abstract void SpawnObject(bool shouldMoveOnSpawn = false, Cell targetCell = null, Action OnComplete = null);
 
     public virtual void MoveToCell(Cell targetCell, Action OnComplete = null)
     {
+        if (targetCell == null) return;
+
         Vector3 newPosition = GridManager.Instance.GetWorldPositionFromGridPosition(targetCell.GridPosition);
         transform.DOMove(newPosition, 1f).SetEase(Ease.OutBounce).OnComplete(() =>
         {
@@ -19,7 +21,7 @@ public abstract class MovableObject : MonoBehaviour, IPoolable
 
     public virtual void OnSpawnFromPool()
     {
-        gameObject.SetActive(true);
+        SpawnObject();
     }
 
     public virtual void OnReturnToPool()
@@ -28,4 +30,3 @@ public abstract class MovableObject : MonoBehaviour, IPoolable
         gameObject.SetActive(false);
     }
 }
-

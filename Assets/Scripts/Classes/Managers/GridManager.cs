@@ -156,12 +156,11 @@ public class GridManager : Singleton<GridManager>
         tile.transform.position = spawnPosition;
         tile.transform.localScale = sizeModifier;
         cell.SetTile(tile);
-        tile.SpawnObject();
+        tile.SpawnObject(!isInitial, cell, OnTileMovementComplete);
 
         if (!isInitial)
         {
             tilesMovingCount++;
-            tile.MoveToCell(cell, OnTileMovementComplete);
         }
     }
 
