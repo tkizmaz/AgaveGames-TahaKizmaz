@@ -5,5 +5,6 @@ public class TileData : ScriptableObject
 {
     public string tileName;
     public TileColor tileColor;
+    public TileMoveType moveType;
     public Sprite tileSprite;
 }
