@@ -3,19 +3,19 @@ using UnityEngine;
 
 public class MoveValidator
 {
-    private Cell[,] grid;
-    private int columnCount;
-    private int rowCount;
+    private GridManager gridManager;
 
-    public MoveValidator(Cell[,] grid, int columns, int rows)
+    public MoveValidator()
     {
-        this.grid = grid;
-        this.columnCount = columns;
-        this.rowCount = rows;
+        this.gridManager = GridManager.Instance;
     }
 
     public bool HasAvailableMoves()
     {
+        Cell[,] grid = gridManager.Grid;
+        int columnCount = gridManager.ColumnCount;
+        int rowCount = gridManager.RowCount;
+        
         bool[,] visited = new bool[columnCount, rowCount];
         List<Vector2Int> tileCheckOrder = GetTileCheckOrder();
 
@@ -39,7 +39,12 @@ public class MoveValidator
 
     private void FindConnectedTiles(int x, int y, TileColor color, List<Cell> connectedTiles, bool[,] visited)
     {
+        Cell[,] grid = gridManager.Grid;
+        int columnCount = gridManager.ColumnCount;
+        int rowCount = gridManager.RowCount;
+
         if (x < 0 || x >= columnCount || y < 0 || y >= rowCount || visited[x, y]) return;
+
         Cell cell = grid[x, y];
         if (!cell.IsOccupied || cell.CurrentTile.TileData.tileColor != color) return;
 
@@ -54,6 +59,9 @@ public class MoveValidator
 
     private List<Vector2Int> GetTileCheckOrder()
     {
+        int columnCount = gridManager.ColumnCount;
+        int rowCount = gridManager.RowCount;
+
         List<Vector2Int> positions = new List<Vector2Int>();
 
         int centerX = columnCount / 2;

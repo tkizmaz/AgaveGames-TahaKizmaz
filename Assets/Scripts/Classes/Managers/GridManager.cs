@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class GridManager : Singleton<GridManager>
 {
-    [SerializeField] private int rowCount = 5;
-    [SerializeField] private int columnCount = 5;
+    [SerializeField] private int rowCount;
+    public int RowCount => rowCount;
+    [SerializeField] private int columnCount;
+    public int ColumnCount => columnCount;
     [SerializeField] private GameObject cellPrefab; 
     [SerializeField] private GameObject tilePrefab; 
     [SerializeField] private float paddingPercentage = 0.05f;
     
     private Vector3 sizeModifier;
     private Cell[,] grid; 
+    public Cell[,] Grid => grid;
     private ObjectPool<Tile> tilePool;
     private MoveValidator moveValidator;
     private GridShuffler gridShuffler;
@@ -58,8 +61,8 @@ public class GridManager : Singleton<GridManager>
             }
         }
 
-        moveValidator = new MoveValidator(grid, columnCount, rowCount);
-        gridShuffler = new GridShuffler(grid, columnCount, rowCount);
+        moveValidator = new MoveValidator();
+        gridShuffler = new GridShuffler();
         CheckForPossibleMoves();
     }
 

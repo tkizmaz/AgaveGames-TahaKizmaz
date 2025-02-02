@@ -4,20 +4,21 @@ using DG.Tweening;
 
 public class GridShuffler
 {
-    private Cell[,] grid;
-    private int columnCount;
-    private int rowCount;
+    private GridManager gridManager;
 
-    public GridShuffler(Cell[,] grid, int columns, int rows)
+    public GridShuffler()
     {
-        this.grid = grid;
-        this.columnCount = columns;
-        this.rowCount = rows;
+        this.gridManager = GridManager.Instance;
     }
 
     public void ShuffleBoard()
     {
+        Cell[,] grid = gridManager.Grid;
+        int columnCount = gridManager.ColumnCount;
+        int rowCount = gridManager.RowCount;
+
         List<Tile> allTiles = new List<Tile>();
+
         for (int x = 0; x < columnCount; x++)
         {
             for (int y = 0; y < rowCount; y++)
