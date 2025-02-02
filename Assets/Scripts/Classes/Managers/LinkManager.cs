@@ -33,7 +33,6 @@ public class LinkManager : MonoBehaviour
 
     private void StartLinking()
     {
-        Debug.Log("Start Linking");
         linkedCells.Clear();
         Cell firstCell = GetSelectedCell();
 
@@ -102,7 +101,7 @@ public class LinkManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Link is too short");
+            GameManager.Instance.ChangeState(GameState.WaitingForInput);
         }
     }
 
