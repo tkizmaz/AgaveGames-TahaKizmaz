@@ -18,8 +18,8 @@ public class UIManager : Singleton<UIManager>
     private void OnEnable()
     {
         GameEvents.OnMoveMade += UpdateMovesUI;
-        GameEvents.OnTargetTileChanged += SetTargetUI;
-        GameEvents.OnTargetTileCountChanged += UpdateTargetTileCount; 
+        GameEvents.OnGoalTileChanged += SetTargetUI;
+        GameEvents.OnGoalTileCountChanged += UpdateTargetTileCount; 
         GameEvents.OnGameStateChanged += OnGameStateChanged;
 
     }
@@ -27,8 +27,8 @@ public class UIManager : Singleton<UIManager>
     private void OnDisable()
     {
         GameEvents.OnMoveMade -= UpdateMovesUI;
-        GameEvents.OnTargetTileChanged -= SetTargetUI;
-        GameEvents.OnTargetTileCountChanged -= UpdateTargetTileCount;
+        GameEvents.OnGoalTileChanged -= SetTargetUI;
+        GameEvents.OnGoalTileCountChanged -= UpdateTargetTileCount;
     }
 
     private void UpdateMovesUI(int movesLeft)

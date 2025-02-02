@@ -35,7 +35,7 @@ public class GameManager : Singleton<GameManager>
     private void InitializeTarget()
     {
         targetTileData = TileDatabase.Instance.GetRandomTileData();
-        GameEvents.OnTargetTileChanged?.Invoke(targetTileData);
+        GameEvents.OnGoalTileChanged?.Invoke(targetTileData);
     }
 
     public void ResetGame()
@@ -44,7 +44,7 @@ public class GameManager : Singleton<GameManager>
         collectedTiles = 0;
 
         GameEvents.OnMoveMade?.Invoke(currentMoves);
-        GameEvents.OnTargetTileCountChanged?.Invoke(targetCount);
+        GameEvents.OnGoalTileCountChanged?.Invoke(targetCount);
     }
 
     private void OnTileDestroyed(Tile tile)
@@ -54,7 +54,7 @@ public class GameManager : Singleton<GameManager>
         if (tile.TileData == targetTileData) 
         {
             collectedTiles++;
-            GameEvents.OnTargetTileCountChanged?.Invoke(targetCount - collectedTiles);
+            GameEvents.OnGoalTileCountChanged?.Invoke(targetCount - collectedTiles);
 
             if (collectedTiles >= targetCount)
             {
