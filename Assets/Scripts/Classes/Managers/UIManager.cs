@@ -10,11 +10,6 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private Image targetTileImage; 
     [SerializeField] private GameObject gameOverPanel;
 
-    protected override void Awake()
-    {
-        base.Awake();
-    }
-
     private void OnEnable()
     {
         GameEvents.OnMoveMade += UpdateMovesUI;
