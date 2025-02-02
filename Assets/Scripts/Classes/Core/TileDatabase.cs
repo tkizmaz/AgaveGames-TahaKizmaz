@@ -1,17 +1,9 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class TileDatabase : MonoBehaviour
+public class TileDatabase : Singleton<TileDatabase>
 {
-    public static TileDatabase Instance { get; private set; }
-
-    [SerializeField] private List<TileData> allTileDataList; 
-
-    private void Awake()
-    {
-        Instance = this;
-    }
-
+    [SerializeField] private List<TileData> allTileDataList;
     public TileData GetRandomTileData()
     {
         if (allTileDataList == null || allTileDataList.Count == 0)
