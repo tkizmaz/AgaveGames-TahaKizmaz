@@ -1,39 +1,45 @@
-using System;
 using UnityEngine;
 
-public class Tile : MovableObject
+public abstract class Tile : MonoBehaviour, IPoolable
 {
     [SerializeField]
-    private TileData tileData;
+    protected TileData tileData;
     public TileData TileData => tileData;
-    private SpriteRenderer spriteRenderer;
 
-    private void Awake() 
+    protected SpriteRenderer spriteRenderer;
+
+    protected virtual void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    public override void SpawnObject(bool shouldMoveOnSpawn = false, Cell targetCell = null, Action OnComplete = null)
+    public virtual void SetTileData(TileData tileData)
+    {
+        this.tileData = tileData;
+        spriteRenderer.sprite = tileData.tileSprite;
+    }
+
+    public virtual void SpawnObject()
     {
         TileColor randomColor = (TileColor)UnityEngine.Random.Range(0, System.Enum.GetNames(typeof(TileColor)).Length);
         TileData selectedData = TileDatabase.Instance.GetTileDataByColor(randomColor);
 
         if (selectedData != null)
         {
-            tileData = selectedData;
-            spriteRenderer.sprite = tileData.tileSprite;
+            SetTileData(selectedData);
         }
-
         spriteRenderer.sortingOrder = 1;
-
-        if (shouldMoveOnSpawn && targetCell != null)
-        {
-            MoveToCell(targetCell, OnComplete);
-        }
     }
 
-    public override void OnSpawnFromPool()
+    public virtual void OnSpawnFromPool()
     {
-        SpawnObject();
+        gameObject.SetActive(true);
     }
+
+    public virtual void OnReturnToPool()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public abstract void OnTileDestroyed();
 }
