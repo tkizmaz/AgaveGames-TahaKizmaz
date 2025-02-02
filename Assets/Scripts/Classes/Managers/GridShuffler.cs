@@ -44,7 +44,10 @@ public class GridShuffler
                 if (grid[x, y].IsOccupied)
                 {
                     Tile tile = allTiles[index++];
-                    tile.MoveToCell(grid[x, y]);
+                    if (tile is MovableTile movableTile)
+                    {
+                        movableTile.MoveToCell(grid[x, y]);
+                    }
                     grid[x, y].SetTile(tile);
                 }
             }

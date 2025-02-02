@@ -102,15 +102,21 @@ public class GridManager : Singleton<GridManager>
                 {
                     Tile tile = cell.CurrentTile;
                     grid[x, lowestEmptyRow].SetTile(tile);
-                    tile.MoveToCell(grid[x, lowestEmptyRow], OnTileMovementComplete);
+
+                    if (tile is MovableTile movableTile)
+                    {
+                        movableTile.MoveToCell(grid[x, lowestEmptyRow], OnTileMovementComplete);
+                        tilesMovingCount++;
+                    }
+
                     cell.ClearTileReference();
                     lowestEmptyRow--;
-                    tilesMovingCount++;
                 }
             }
         }
         RefillTiles(affectedColumns);
     }
+
 
     public Vector3 GetWorldPositionFromGridPosition(Vector2Int gridPosition)
     {
@@ -156,11 +162,12 @@ public class GridManager : Singleton<GridManager>
         tile.transform.position = spawnPosition;
         tile.transform.localScale = sizeModifier;
         cell.SetTile(tile);
-        tile.SpawnObject(!isInitial, cell, OnTileMovementComplete);
+        tile.SpawnObject();
 
-        if (!isInitial)
+        if (!isInitial && tile is MovableTile movableTile)
         {
             tilesMovingCount++;
+            movableTile.MoveToCell(cell, OnTileMovementComplete);
         }
     }
 
