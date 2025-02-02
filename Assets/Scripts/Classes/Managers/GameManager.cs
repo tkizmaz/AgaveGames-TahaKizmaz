@@ -42,6 +42,7 @@ public class GameManager : Singleton<GameManager>
     {
         currentMoves = maxMoves;
         collectedTiles = 0;
+        CurrentState = GameState.WaitingForInput;
 
         GameEvents.OnMoveMade?.Invoke(currentMoves);
         GameEvents.OnGoalTileCountChanged?.Invoke(targetCount);
