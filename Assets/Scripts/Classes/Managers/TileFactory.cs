@@ -4,9 +4,18 @@ public static class TileFactory
 {
     public static Tile CreateTile(Tile tile, TileData tileData, Transform parent)
     {
-        if (tileData is ChipData && !(tile is Chip))
+        switch (tileData.tileType)
         {
-            tile = tile.gameObject.AddComponent<Chip>();
+            case TileType.Chip:
+                if (!(tile is Chip))
+                {
+                    tile = tile.gameObject.AddComponent<Chip>();
+                }
+                break;
+
+            default:
+                Debug.LogWarning($"This tile type is not implemented: {tileData.tileType}");
+                break;
         }
 
         tile.SetTileData(tileData);
