@@ -4,6 +4,8 @@ public static class TileFactory
 {
     public static Tile CreateTile(Tile tile, TileData tileData, Transform parent)
     {
+        if (tileData == null || tile == null) return null;
+
         switch (tileData.tileType)
         {
             case TileType.Chip:
@@ -14,8 +16,8 @@ public static class TileFactory
                 break;
 
             default:
-                Debug.LogWarning($"This tile type is not implemented: {tileData.tileType}");
-                break;
+                Debug.LogWarning($"TileFactory: Unimplemented tile type: {tileData.tileType}");
+                return null;
         }
 
         tile.SetTileData(tileData);
