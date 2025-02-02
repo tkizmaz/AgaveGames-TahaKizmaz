@@ -18,11 +18,13 @@ public class GridManager : Singleton<GridManager>
     private ObjectPool<Tile> tilePool;
     private MoveValidator moveValidator;
     private GridShuffler gridShuffler;
+    private GridFlowManager gridFlowManager;
     private int tilesMovingCount;
 
     protected override void Awake()
     {
         base.Awake();
+        gridFlowManager = new GridFlowManager(this);
     }
 
     void Start()
@@ -85,39 +87,7 @@ public class GridManager : Singleton<GridManager>
 
     public void DropTiles(List<int> affectedColumns)
     {
-        GameManager.Instance.ChangeState(GameState.TilesMoving);
-        tilesMovingCount = 0;
-
-        foreach (int x in affectedColumns)
-        {
-            int lowestEmptyRow = -1;
-            for (int y = rowCount - 1; y >= 0; y--)
-            {
-                Cell cell = grid[x, y];
-                if (!cell.IsOccupied)
-                {
-                    if (lowestEmptyRow == -1 || y > lowestEmptyRow)
-                    {
-                        lowestEmptyRow = y;
-                    }
-                }
-                else if (lowestEmptyRow != -1 && y < lowestEmptyRow)
-                {
-                    Tile tile = cell.CurrentTile;
-                    grid[x, lowestEmptyRow].SetTile(tile);
-
-                    if (tile is MovableTile movableTile)
-                    {
-                        movableTile.MoveToCell(grid[x, lowestEmptyRow], OnTileMovementComplete);
-                        tilesMovingCount++;
-                    }
-
-                    cell.ClearTileReference();
-                    lowestEmptyRow--;
-                }
-            }
-        }
-        RefillTiles(affectedColumns);
+        gridFlowManager.DropTiles(affectedColumns);
     }
 
 
@@ -130,35 +100,7 @@ public class GridManager : Singleton<GridManager>
         return grid[gridPosition.x, gridPosition.y].transform.position;
     }
 
-
-    private void RefillTiles(List<int> columnsToBeCreated)
-    {
-        foreach (int x in columnsToBeCreated)
-        {
-            for (int y = 0; y < rowCount; y++)
-            {
-                Cell cell = grid[x, y];
-                if (!cell.IsOccupied)
-                {
-                    CreateTile(cell);
-                }
-            }
-        }
-
-        if (tilesMovingCount == 0)
-        {
-            OnTileMovementComplete();
-        }
-    }
-
-    public void ReturnTileToPool(Tile tile)
-    {
-        tile.gameObject.SetActive(false); 
-        tilePool.ReturnToPool(tile);
-    }
-
-
-private void CreateTile(Cell cell, bool isInitial = false)
+    public void CreateTile(Cell cell, bool isInitial = false)
     {
         Vector3 spawnPosition = isInitial ? cell.transform.position : new Vector3(cell.transform.position.x, cell.transform.position.y + 1.5f, 0);
 
@@ -177,9 +119,6 @@ private void CreateTile(Cell cell, bool isInitial = false)
             movableTile.MoveToCell(cell, OnTileMovementComplete);
         }
     }
-
-
-
 
     private void OnTileMovementComplete()
     {
@@ -201,6 +140,12 @@ private void CreateTile(Cell cell, bool isInitial = false)
         {
             GameManager.Instance.ChangeState(GameState.WaitingForInput);
         }
+    }
+
+    public void ReturnTileToPool(Tile tile)
+    {
+        tile.gameObject.SetActive(false); 
+        tilePool.ReturnToPool(tile);
     }
 
     private IEnumerator ShuffleUntilValidMoves()
