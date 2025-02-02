@@ -1,10 +1,15 @@
-using UnityEngine;
-
 public class Chip : MovableTile
 {
-    public override void SpawnObject()
-    {
-        base.SpawnObject();
-    }
+    private ChipColor chipColor; 
 
+    public override void SetTileData(TileData tileData)
+    {
+        base.SetTileData(tileData);
+        
+        if (tileData is ChipData chipData)
+        {
+            chipColor = chipData.chipColor; 
+            spriteRenderer.sortingOrder = 1;
+        }
+    }
 }

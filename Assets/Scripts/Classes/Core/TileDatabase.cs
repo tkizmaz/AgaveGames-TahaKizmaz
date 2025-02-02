@@ -1,21 +1,24 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Linq;
 
 public class TileDatabase : MonoBehaviour
 {
-    public static TileDatabase Instance;
-    private void Awake() => Instance = this;
+    public static TileDatabase Instance { get; private set; }
 
-    [SerializeField] private List<TileData> tileList;
+    [SerializeField] private List<TileData> allTileDataList; 
 
-    public TileData GetTileDataByColor(TileColor color)
+    private void Awake()
     {
-        return tileList.FirstOrDefault(tile => tile.tileColor == color);
+        Instance = this;
     }
 
     public TileData GetRandomTileData()
     {
-        return tileList[Random.Range(0, tileList.Count)];
+        if (allTileDataList == null || allTileDataList.Count == 0)
+        {
+            return null;
+        }
+
+        return allTileDataList[Random.Range(0, allTileDataList.Count)];
     }
 }

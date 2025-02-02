@@ -2,10 +2,9 @@ using UnityEngine;
 
 public static class TileFactory
 {
-    public static Tile CreateTile(TileData tileData, ObjectPool<Tile> tilePool, Transform parent)
+    public static Tile CreateTile(Tile tile, TileData tileData, Transform parent)
     {
-        Tile tile = tilePool.GetFromPool();
-        if (tileData.tileType == TileType.Chip && !(tile is Chip))
+        if (tileData is ChipData && !(tile is Chip))
         {
             tile = tile.gameObject.AddComponent<Chip>();
         }

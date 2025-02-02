@@ -4,15 +4,17 @@ public class GameManager : Singleton<GameManager>
 {
     [SerializeField] private int maxMoves = 10;
     [SerializeField] public int targetCount = 20;
-    private TileColor targetColor;
     private int currentMoves;
     private int collectedTiles;
     public GameState CurrentState { get; private set; }
+    
+    private TileData targetTileData; 
 
     protected override void Awake()
     {
         base.Awake();
     }
+
     private void Start()
     {
         InitializeTarget();
@@ -32,7 +34,8 @@ public class GameManager : Singleton<GameManager>
 
     private void InitializeTarget()
     {
-        targetColor = (TileColor)Random.Range(0, System.Enum.GetNames(typeof(TileColor)).Length);
+        targetTileData = TileDatabase.Instance.GetRandomTileData();
+        GameEvents.OnTargetTileChanged?.Invoke(targetTileData);
     }
 
     public void ResetGame()
@@ -41,18 +44,14 @@ public class GameManager : Singleton<GameManager>
         collectedTiles = 0;
 
         GameEvents.OnMoveMade?.Invoke(currentMoves);
-        GameEvents.OnTargetTileChanged?.Invoke(targetColor); 
         GameEvents.OnTargetTileCountChanged?.Invoke(targetCount);
     }
 
     private void OnTileDestroyed(Tile tile)
     {
-        if (tile == null || tile.TileData == null)
-        {
-            return;
-        }
+        if (tile == null || tile.TileData == null) return;
 
-        if (tile.TileData.tileColor == targetColor)
+        if (tile.TileData == targetTileData) 
         {
             collectedTiles++;
             GameEvents.OnTargetTileCountChanged?.Invoke(targetCount - collectedTiles);
@@ -82,5 +81,4 @@ public class GameManager : Singleton<GameManager>
         CurrentState = newState;
         GameEvents.OnGameStateChanged?.Invoke(newState);
     }
-
 }

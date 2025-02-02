@@ -36,13 +36,9 @@ public class UIManager : Singleton<UIManager>
         movesValueText.text = movesLeft.ToString();
     }
 
-    private void SetTargetUI(TileColor color)
+    private void SetTargetUI(TileData targetTileData)
     {
-        TileData targetTileData = TileDatabase.Instance.GetTileDataByColor(color);
-        if (targetTileData != null)
-        {
-            targetTileImage.sprite = targetTileData.tileSprite;
-        }
+        targetTileImage.sprite = targetTileData.tileSprite;
     }
 
 

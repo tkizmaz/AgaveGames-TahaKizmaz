@@ -378,11 +378,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4523bada293f4fb9aacd5475c75e149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileList:
-  - {fileID: 11400000, guid: e41380bb657634b808bb0aa4467d0b5c, type: 2}
-  - {fileID: 11400000, guid: e67985080a8a1495db82c8c453f1a22d, type: 2}
-  - {fileID: 11400000, guid: 679a7579a488240908460412852243ef, type: 2}
-  - {fileID: 11400000, guid: 75818b54af64644e2a91022d2d60cb3a, type: 2}
+  allTileDataList:
+  - {fileID: 11400000, guid: 328c0c3faa0d245b49fdd836c3919b59, type: 2}
+  - {fileID: 11400000, guid: ef5289376964c4c47b7df519ce81ded1, type: 2}
+  - {fileID: 11400000, guid: 920897946b2634ed2a5b654e63e4befe, type: 2}
+  - {fileID: 11400000, guid: 3b9e4b043d8da4543b7c12d15a3e3e57, type: 2}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

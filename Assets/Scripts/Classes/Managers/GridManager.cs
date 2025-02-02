@@ -158,18 +158,18 @@ public class GridManager : Singleton<GridManager>
     }
 
 
-    private void CreateTile(Cell cell, bool isInitial = false)
+private void CreateTile(Cell cell, bool isInitial = false)
     {
         Vector3 spawnPosition = isInitial ? cell.transform.position : new Vector3(cell.transform.position.x, cell.transform.position.y + 1.5f, 0);
 
         TileData tileData = TileDatabase.Instance.GetRandomTileData();
-
-        Tile tile = TileFactory.CreateTile(tileData, tilePool, transform);
+        
+        Tile tile = tilePool.GetFromPool();
+        tile = TileFactory.CreateTile(tile, tileData, transform);
 
         tile.transform.position = spawnPosition;
         tile.transform.localScale = sizeModifier;
         cell.SetTile(tile);
-        tile.SpawnObject();
 
         if (!isInitial && tile is MovableTile movableTile)
         {
@@ -177,6 +177,9 @@ public class GridManager : Singleton<GridManager>
             movableTile.MoveToCell(cell, OnTileMovementComplete);
         }
     }
+
+
+
 
     private void OnTileMovementComplete()
     {

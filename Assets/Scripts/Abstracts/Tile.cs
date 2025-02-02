@@ -22,22 +22,6 @@ public class Tile : MonoBehaviour, IPoolable
         }
     }
 
-    public virtual void SpawnObject()
-    {
-        TileColor randomColor = (TileColor)UnityEngine.Random.Range(0, System.Enum.GetNames(typeof(TileColor)).Length);
-        TileData selectedData = TileDatabase.Instance.GetTileDataByColor(randomColor);
-
-        if (selectedData != null)
-        {
-            SetTileData(selectedData);
-        }
-        
-        if (spriteRenderer != null)
-        {
-            spriteRenderer.sortingOrder = 1;
-        }
-    }
-
     public virtual void OnSpawnFromPool()
     {
         gameObject.SetActive(true);

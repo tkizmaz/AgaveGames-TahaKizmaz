@@ -68,14 +68,17 @@ public class LinkManager : MonoBehaviour
     private void TryAddTileToLink()
     {
         Cell newCell = GetSelectedCell();
-        if(newCell != null && newCell != lastHoveredCell)
+        if (newCell != null && newCell != lastHoveredCell)
         {
             lastHoveredCell = newCell;
 
-            if(!linkedCells.Contains(newCell))
+            if (!linkedCells.Contains(newCell))
             {
                 Cell lastCell = linkedCells[linkedCells.Count - 1];
-                if(CheckIfTilesAreNeighbors(lastCell, newCell) && lastCell.CurrentTile.TileData.tileColor == newCell.CurrentTile.TileData.tileColor && newCell.CurrentTile.TileData.selectableType == TileSelectableType.Selectable)
+
+                if (CheckIfTilesAreNeighbors(lastCell, newCell) && 
+                    lastCell.CurrentTile.TileData == newCell.CurrentTile.TileData && 
+                    newCell.CurrentTile.TileData.selectableType == TileSelectableType.Selectable)
                 {
                     linkedCells.Add(newCell);
                     newCell.CurrentTile.SetSelected(true);
@@ -83,6 +86,7 @@ public class LinkManager : MonoBehaviour
             }
         }
     }
+
 
     private void FinishLinking()
     {
