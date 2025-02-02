@@ -36,11 +36,11 @@ public class LinkManager : MonoBehaviour
         linkedCells.Clear();
         Cell firstCell = GetSelectedCell();
         bool isSelectable = firstCell != null && firstCell.CurrentTile != null && firstCell.CurrentTile.TileData.selectableType == TileSelectableType.Selectable;
-        if(firstCell != null && isSelectable)
+        if(isSelectable)
         {
             linkedCells.Add(firstCell);
             lastHoveredCell = firstCell;
-            firstCell.CurrentTile.SetSelected(true);
+            ChangeTileHighlight(firstCell.CurrentTile, true);
             GameManager.Instance.ChangeState(GameState.Linking);
         }
         else
@@ -81,7 +81,7 @@ public class LinkManager : MonoBehaviour
                     newCell.CurrentTile.TileData.selectableType == TileSelectableType.Selectable)
                 {
                     linkedCells.Add(newCell);
-                    newCell.CurrentTile.SetSelected(true);
+                    ChangeTileHighlight(newCell.CurrentTile, true);
                 }
             }
         }
@@ -109,7 +109,7 @@ public class LinkManager : MonoBehaviour
         {
             foreach(Cell cell in linkedCells)
             {
-                cell.CurrentTile.SetSelected(false);
+                ChangeTileHighlight(cell.CurrentTile, false);
             }
             GameManager.Instance.ChangeState(GameState.WaitingForInput);
         }
@@ -118,5 +118,14 @@ public class LinkManager : MonoBehaviour
     private bool CheckIfTilesAreNeighbors(Cell a, Cell b)
     {
         return (Mathf.Abs(a.GridPosition.x - b.GridPosition.x) == 1 && a.GridPosition.y == b.GridPosition.y) || (Mathf.Abs(a.GridPosition.y - b.GridPosition.y) == 1 && a.GridPosition.x == b.GridPosition.x);
+    }
+
+    private void ChangeTileHighlight(Tile tile, bool isSelected)
+    {
+        ISelectable selectableTile = tile as ISelectable;
+        if(selectableTile != null)
+        {
+            selectableTile.SetSelected(isSelected);
+        }
     }
 }

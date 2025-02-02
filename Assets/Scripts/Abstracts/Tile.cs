@@ -29,15 +29,6 @@ public class Tile : MonoBehaviour, IPoolable
 
     public virtual void OnReturnToPool()
     {
-        SetSelected(false);
         gameObject.SetActive(false);
-    }
-    
-    public void SetSelected(bool isSelected)
-    {
-        if (spriteRenderer != null)
-        {
-            spriteRenderer.color = isSelected ? Color.gray : Color.white;
-        }
     }
 }

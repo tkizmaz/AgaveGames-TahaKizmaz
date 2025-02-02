@@ -14,4 +14,9 @@ public abstract class MovableTile : Tile
             OnComplete?.Invoke();
         });
     }
+
+    public override void OnReturnToPool()
+    {
+        base.OnReturnToPool();
+    }
 }

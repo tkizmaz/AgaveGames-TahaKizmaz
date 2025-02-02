@@ -1,6 +1,7 @@
-public class Chip : MovableTile
+using UnityEngine;
+public class Chip : MovableTile, ISelectable
 {
-    private ChipColor chipColor; 
+    private ChipColor chipColor;
 
     public override void SetTileData(TileData tileData)
     {
@@ -8,8 +9,22 @@ public class Chip : MovableTile
         
         if (tileData is ChipData chipData)
         {
-            chipColor = chipData.chipColor; 
+            chipColor = chipData.chipColor;
             spriteRenderer.sortingOrder = 1;
         }
+    }
+
+    public void SetSelected(bool isSelected)
+    {
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.color = isSelected ? Color.gray : Color.white;
+        }
+    }
+
+    public override void OnReturnToPool()
+    {
+        SetSelected(false);
+        base.OnReturnToPool();
     }
 }
