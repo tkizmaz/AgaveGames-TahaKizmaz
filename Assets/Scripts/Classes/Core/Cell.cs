@@ -16,17 +16,17 @@ public class Cell : MonoBehaviour
 
     public void SetTile(Tile tile)
     {
+        if (tile == null) return;
         currentTile = tile;   
         isOccupied = true;
+        tile.transform.SetParent(transform);
     }
 
     public void RemoveCurrentTile()
     {
-        if (currentTile == null)
-        {
-            return;
-        }
+        if (currentTile == null) return;
         GridManager.Instance.ReturnTileToPool(currentTile);
+        currentTile.transform.SetParent(null);
         ClearTileReference();
     }
 
