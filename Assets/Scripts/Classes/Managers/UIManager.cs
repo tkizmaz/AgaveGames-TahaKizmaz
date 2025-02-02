@@ -49,7 +49,6 @@ public class UIManager : Singleton<UIManager>
 
     private void OnGameStateChanged(GameState state)
     {
-        Debug.Log("Game State Changed: " + state);
         if (state == GameState.GameOver || state == GameState.GameWon)
         {
             gameOverPanel.SetActive(true);
