@@ -35,8 +35,8 @@ public class LinkManager : MonoBehaviour
     {
         linkedCells.Clear();
         Cell firstCell = GetSelectedCell();
-
-        if(firstCell != null)
+        bool isSelectable = firstCell != null && firstCell.CurrentTile != null && firstCell.CurrentTile.TileData.selectableType == TileSelectableType.Selectable;
+        if(firstCell != null && isSelectable)
         {
             linkedCells.Add(firstCell);
             lastHoveredCell = firstCell;
@@ -75,7 +75,7 @@ public class LinkManager : MonoBehaviour
             if(!linkedCells.Contains(newCell))
             {
                 Cell lastCell = linkedCells[linkedCells.Count - 1];
-                if(CheckIfTilesAreNeighbors(lastCell, newCell) && lastCell.CurrentTile.TileData.tileColor == newCell.CurrentTile.TileData.tileColor)
+                if(CheckIfTilesAreNeighbors(lastCell, newCell) && lastCell.CurrentTile.TileData.tileColor == newCell.CurrentTile.TileData.tileColor && newCell.CurrentTile.TileData.selectableType == TileSelectableType.Selectable)
                 {
                     linkedCells.Add(newCell);
                     newCell.CurrentTile.SetSelected(true);
