@@ -7,8 +7,4 @@ public class Chip : MovableTile
         base.SpawnObject();
     }
 
-    public override void OnTileDestroyed()
-    {
-        //Can be overridden
-    }
 }

@@ -1,6 +1,6 @@
-using UnityEngine;
 using DG.Tweening;
 using System;
+using UnityEngine;
 
 public abstract class MovableTile : Tile
 {
@@ -13,10 +13,5 @@ public abstract class MovableTile : Tile
         {
             OnComplete?.Invoke();
         });
-    }
-
-    public override void SpawnObject()
-    {
-        base.SpawnObject();
     }
 }

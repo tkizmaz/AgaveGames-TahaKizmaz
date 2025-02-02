@@ -7,5 +7,6 @@ public class TileData : ScriptableObject
     public TileColor tileColor;
     public TileMoveType moveType;
     public TileSelectableType selectableType;
+    public TileType tileType;
     public Sprite tileSprite;
 }

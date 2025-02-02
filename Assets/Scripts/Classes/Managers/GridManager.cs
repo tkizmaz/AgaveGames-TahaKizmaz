@@ -161,7 +161,11 @@ public class GridManager : Singleton<GridManager>
     private void CreateTile(Cell cell, bool isInitial = false)
     {
         Vector3 spawnPosition = isInitial ? cell.transform.position : new Vector3(cell.transform.position.x, cell.transform.position.y + 1.5f, 0);
-        Tile tile = tilePool.GetFromPool();
+
+        TileData tileData = TileDatabase.Instance.GetRandomTileData();
+
+        Tile tile = TileFactory.CreateTile(tileData, tilePool, transform);
+
         tile.transform.position = spawnPosition;
         tile.transform.localScale = sizeModifier;
         cell.SetTile(tile);

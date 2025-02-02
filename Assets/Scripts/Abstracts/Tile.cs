@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class Tile : MonoBehaviour, IPoolable
+public class Tile : MonoBehaviour, IPoolable
 {
     [SerializeField]
     protected TileData tileData;
@@ -16,7 +16,10 @@ public abstract class Tile : MonoBehaviour, IPoolable
     public virtual void SetTileData(TileData tileData)
     {
         this.tileData = tileData;
-        spriteRenderer.sprite = tileData.tileSprite;
+        if (spriteRenderer != null && tileData != null)
+        {
+            spriteRenderer.sprite = tileData.tileSprite;
+        }
     }
 
     public virtual void SpawnObject()
@@ -28,7 +31,11 @@ public abstract class Tile : MonoBehaviour, IPoolable
         {
             SetTileData(selectedData);
         }
-        spriteRenderer.sortingOrder = 1;
+        
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.sortingOrder = 1;
+        }
     }
 
     public virtual void OnSpawnFromPool()
@@ -44,15 +51,9 @@ public abstract class Tile : MonoBehaviour, IPoolable
     
     public void SetSelected(bool isSelected)
     {
-        if (isSelected)
+        if (spriteRenderer != null)
         {
-            spriteRenderer.color = Color.gray;
-        }
-        else
-        {
-            spriteRenderer.color = Color.white;
+            spriteRenderer.color = isSelected ? Color.gray : Color.white;
         }
     }
-
-    public abstract void OnTileDestroyed();
 }
