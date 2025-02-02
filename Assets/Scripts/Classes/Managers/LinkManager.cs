@@ -40,6 +40,7 @@ public class LinkManager : MonoBehaviour
         {
             linkedCells.Add(firstCell);
             lastHoveredCell = firstCell;
+            firstCell.CurrentTile.SetSelected(true);
             GameManager.Instance.ChangeState(GameState.Linking);
         }
         else
@@ -77,6 +78,7 @@ public class LinkManager : MonoBehaviour
                 if(CheckIfTilesAreNeighbors(lastCell, newCell) && lastCell.CurrentTile.TileData.tileColor == newCell.CurrentTile.TileData.tileColor)
                 {
                     linkedCells.Add(newCell);
+                    newCell.CurrentTile.SetSelected(true);
                 }
             }
         }
@@ -101,6 +103,10 @@ public class LinkManager : MonoBehaviour
         }
         else
         {
+            foreach(Cell cell in linkedCells)
+            {
+                cell.CurrentTile.SetSelected(false);
+            }
             GameManager.Instance.ChangeState(GameState.WaitingForInput);
         }
     }

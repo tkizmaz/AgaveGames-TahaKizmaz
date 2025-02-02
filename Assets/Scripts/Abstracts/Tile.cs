@@ -38,7 +38,20 @@ public abstract class Tile : MonoBehaviour, IPoolable
 
     public virtual void OnReturnToPool()
     {
+        SetSelected(false);
         gameObject.SetActive(false);
+    }
+    
+    public void SetSelected(bool isSelected)
+    {
+        if (isSelected)
+        {
+            spriteRenderer.color = Color.gray;
+        }
+        else
+        {
+            spriteRenderer.color = Color.white;
+        }
     }
 
     public abstract void OnTileDestroyed();
