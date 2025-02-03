@@ -21,7 +21,6 @@ public class Tile : MonoBehaviour, IPoolable
         spriteRenderer.sortingOrder = 1;
     }
 
-
     public virtual void OnSpawnFromPool()
     {
         gameObject.SetActive(true);
