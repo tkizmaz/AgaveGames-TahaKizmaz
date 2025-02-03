@@ -46,8 +46,7 @@ public class GameManager : Singleton<GameManager>
 
         GameEvents.OnMoveMade?.Invoke(currentMoves);
         GameEvents.OnGoalTileCountChanged?.Invoke(gameSettings.GoalTileCount);
-        ChangeState(GameState.WaitingForInput);
-
+        CurrentState = GameState.WaitingForInput;
         UIManager.Instance.ResetUI();
     }
 
@@ -85,6 +84,7 @@ public class GameManager : Singleton<GameManager>
 
     public void ChangeState(GameState newState)
     {        
+        if (CurrentState == GameState.GameOver || CurrentState == GameState.GameWon) return;
         CurrentState = newState;
         GameEvents.OnGameStateChanged?.Invoke(newState);
     }
