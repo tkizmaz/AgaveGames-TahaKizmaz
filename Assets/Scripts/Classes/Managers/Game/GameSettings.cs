@@ -3,7 +3,9 @@ using UnityEngine;
 public class GameSettings : Singleton<GameSettings>
 {
     [Header("Grid Settings")]
+    [Range(3, 10)]
     [SerializeField] private int rowCount = 8;
+    [Range(3, 10)]
     [SerializeField] private int columnCount = 8;
 
     [Header("Game Rules Settings")]
