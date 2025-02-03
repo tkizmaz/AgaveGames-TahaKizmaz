@@ -121,9 +121,6 @@ public class LinkManager : MonoBehaviour
 
     private void ChangeTileHighlight(Tile tile, bool isSelected)
     {
-        if(tile is ISelectable selectableTile)
-        {
-            selectableTile.SetSelected(isSelected);
-        }
+        (tile as ISelectable)?.SetSelected(isSelected);
     }
 }
