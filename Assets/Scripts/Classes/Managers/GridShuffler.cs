@@ -14,8 +14,8 @@ public class GridShuffler
     public void ShuffleBoard()
     {
         Cell[,] grid = gridManager.Grid;
-        int columnCount = gridManager.ColumnCount;
-        int rowCount = gridManager.RowCount;
+        int columnCount = GameSettings.Instance.ColumnCount;
+        int rowCount = GameSettings.Instance.RowCount;
 
         List<Tile> allTiles = new List<Tile>();
 

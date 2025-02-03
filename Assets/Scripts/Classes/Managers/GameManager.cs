@@ -2,16 +2,16 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-    [SerializeField] private int maxMoves = 10;
-    [SerializeField] public int targetCount = 20;
     private int currentMoves;
     private int collectedTiles;
     public GameState CurrentState { get; private set; }
     private TileData goalTileData; 
     private bool isFirstGame = true;
+    private GameSettings gameSettings;
 
     private void Start()
     {
+        gameSettings = GameSettings.Instance;
         ResetGame();
     }
 
@@ -33,7 +33,7 @@ public class GameManager : Singleton<GameManager>
 
     public void ResetGame()
     {
-        currentMoves = maxMoves;
+        currentMoves = gameSettings.MaxMoves;
         collectedTiles = 0;
 
         InitializeGoal();
@@ -45,7 +45,7 @@ public class GameManager : Singleton<GameManager>
         }
 
         GameEvents.OnMoveMade?.Invoke(currentMoves);
-        GameEvents.OnGoalTileCountChanged?.Invoke(targetCount);
+        GameEvents.OnGoalTileCountChanged?.Invoke(gameSettings.GoalTileCount);
         ChangeState(GameState.WaitingForInput);
 
         UIManager.Instance.ResetUI();
@@ -60,9 +60,9 @@ public class GameManager : Singleton<GameManager>
         if (isGoalTile)
         {
             collectedTiles++;
-            GameEvents.OnGoalTileCountChanged?.Invoke(targetCount - collectedTiles);
+            GameEvents.OnGoalTileCountChanged?.Invoke(gameSettings.GoalTileCount - collectedTiles);
 
-            if (collectedTiles >= targetCount)
+            if (collectedTiles >= gameSettings.GoalTileCount)
             {
                 ChangeState(GameState.GameWon);
             }

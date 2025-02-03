@@ -13,8 +13,8 @@ public class MoveValidator
     public bool HasAvailableMoves()
     {
         Cell[,] grid = gridManager.Grid;
-        int columnCount = gridManager.ColumnCount;
-        int rowCount = gridManager.RowCount;
+        int columnCount = GameSettings.Instance.ColumnCount;
+        int rowCount = GameSettings.Instance.RowCount;
 
         bool[,] visited = new bool[columnCount, rowCount];
         List<Vector2Int> tileCheckOrder = GetTileCheckOrder();
@@ -44,8 +44,8 @@ public class MoveValidator
     private void FindConnectedTiles(int x, int y, ChipColor color, List<Cell> connectedTiles, bool[,] visited)
     {
         Cell[,] grid = gridManager.Grid;
-        int columnCount = gridManager.ColumnCount;
-        int rowCount = gridManager.RowCount;
+        int columnCount = GameSettings.Instance.ColumnCount;
+        int rowCount = GameSettings.Instance.RowCount;
 
         if (x < 0 || x >= columnCount || y < 0 || y >= rowCount || visited[x, y]) return;
 
@@ -63,8 +63,8 @@ public class MoveValidator
 
     private List<Vector2Int> GetTileCheckOrder()
     {
-        int columnCount = gridManager.ColumnCount;
-        int rowCount = gridManager.RowCount;
+        int columnCount = GameSettings.Instance.ColumnCount;
+        int rowCount = GameSettings.Instance.RowCount;
 
         List<Vector2Int> positions = new List<Vector2Int>();
 

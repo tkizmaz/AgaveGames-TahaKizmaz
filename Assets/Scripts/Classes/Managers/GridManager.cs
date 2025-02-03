@@ -4,14 +4,9 @@ using UnityEngine;
 
 public class GridManager : Singleton<GridManager>
 {
-    [SerializeField] private int rowCount;
-    public int RowCount => rowCount;
-    [SerializeField] private int columnCount;
-    public int ColumnCount => columnCount;
     [SerializeField] private GameObject cellPrefab; 
     [SerializeField] private GameObject tilePrefab; 
     [SerializeField] private float paddingPercentage = 0.05f;
-    
     private Vector3 sizeModifier;
     private Cell[,] grid; 
     public Cell[,] Grid => grid;
@@ -19,10 +14,12 @@ public class GridManager : Singleton<GridManager>
     private MoveValidator moveValidator;
     private GridShuffler gridShuffler;
     private GridFlowManager gridFlowManager;
+    private GameSettings gameSettings;
 
     void Start()
     {
-        tilePool = new ObjectPool<Tile>(tilePrefab.GetComponent<Tile>(), rowCount * columnCount, transform);
+        gameSettings = GameSettings.Instance;
+        tilePool = new ObjectPool<Tile>(tilePrefab.GetComponent<Tile>(), gameSettings.RowCount * gameSettings.ColumnCount, transform);
         GenerateGrid();
     }
 
@@ -30,14 +27,14 @@ public class GridManager : Singleton<GridManager>
     {
         if (cellPrefab == null) return;
 
-        grid = new Cell[rowCount, columnCount];
+        grid = new Cell[gameSettings.RowCount, gameSettings.ColumnCount];
 
         float tileSize = CalculateTileSize();
         Vector2 gridOffset = GetGridOffset(tileSize);
 
-        for (int x = 0; x < columnCount; x++)
+        for (int x = 0; x < gameSettings.ColumnCount; x++)
         {
-            for (int y = 0; y < rowCount; y++)
+            for (int y = 0; y < gameSettings.RowCount; y++)
             {
                 Vector2 worldPosition = gridOffset + new Vector2(x * tileSize, -y * tileSize);
                 Cell cell = InstantiateCell(new Vector2Int(x, y), worldPosition, tileSize);
@@ -56,14 +53,14 @@ public class GridManager : Singleton<GridManager>
         float screenWidth = screenHeight * Camera.main.aspect;
         float usableWidth = screenWidth * (1f - 2 * paddingPercentage);
         float usableHeight = screenHeight * (1f - 2 * paddingPercentage);
-        return Mathf.Min(usableWidth / columnCount, usableHeight / rowCount);
+        return Mathf.Min(usableWidth / gameSettings.ColumnCount, usableHeight / gameSettings.RowCount);
     }
 
     private Vector2 GetGridOffset(float tileSize)
     {
         return new Vector2(
-            -((columnCount * tileSize) / 2) + (tileSize / 2),
-            ((rowCount * tileSize) / 2) - (tileSize / 2)
+            -((gameSettings.ColumnCount * tileSize) / 2) + (tileSize / 2),
+            ((gameSettings.RowCount * tileSize) / 2) - (tileSize / 2)
         );
     }
 
@@ -89,7 +86,7 @@ public class GridManager : Singleton<GridManager>
 
     public Vector3 GetWorldPositionFromGridPosition(Vector2Int gridPosition)
     {
-        if (gridPosition.x < 0 || gridPosition.x >= columnCount || gridPosition.y < 0 || gridPosition.y >= rowCount)
+        if (gridPosition.x < 0 || gridPosition.x >= gameSettings.ColumnCount || gridPosition.y < 0 || gridPosition.y >= gameSettings.RowCount)
         {
             return Vector3.zero;
         }

@@ -15,7 +15,7 @@ public class GridFlowManager
     {
         GameManager.Instance.ChangeState(GameState.TilesMoving);
         tilesMovingCount = 0;
-
+        int rowCount = GameSettings.Instance.RowCount;
         Dictionary<int, int> emptySpacesPerColumn = new Dictionary<int, int>();
 
         foreach (int x in affectedColumns)
@@ -24,7 +24,7 @@ public class GridFlowManager
             bool foundImmovable = false;
             emptySpacesPerColumn[x] = 0;
 
-            for (int y = gridManager.RowCount - 1; y >= 0; y--)
+            for (int y = rowCount - 1; y >= 0; y--)
             {
                 Cell cell = gridManager.Grid[x, y];
 
@@ -34,7 +34,7 @@ public class GridFlowManager
                     {
                         lowestEmptyRow = y;
                     }
-                    emptySpacesPerColumn[x]++; // Boşluk sayısını arttır
+                    emptySpacesPerColumn[x]++;
                 }
                 else
                 {
