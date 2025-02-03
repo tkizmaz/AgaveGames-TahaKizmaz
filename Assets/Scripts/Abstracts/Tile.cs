@@ -19,6 +19,7 @@ public class Tile : MonoBehaviour, IPoolable
         
         this.tileData = tileData;
         spriteRenderer.sprite = tileData.tileSprite;
+        spriteRenderer.sortingOrder = 1;
     }
 
 
