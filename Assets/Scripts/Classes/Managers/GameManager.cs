@@ -7,7 +7,6 @@ public class GameManager : Singleton<GameManager>
     private int currentMoves;
     private int collectedTiles;
     public GameState CurrentState { get; private set; }
-    
     private TileData goalTileData; 
 
     private void Start()
