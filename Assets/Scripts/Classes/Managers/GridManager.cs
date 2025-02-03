@@ -46,9 +46,7 @@ public class GridManager : Singleton<GridManager>
             }
         }
 
-        moveValidator = new MoveValidator();
-        gridShuffler = new GridShuffler();
-        gridFlowManager = new GridFlowManager(this);
+        InitializeManagers();
         CheckForPossibleMoves();
     }
 
@@ -158,6 +156,13 @@ public class GridManager : Singleton<GridManager>
         }
 
         CheckForPossibleMoves();
+    }
+
+    private void InitializeManagers()
+    {
+        moveValidator = new MoveValidator();
+        gridShuffler = new GridShuffler();
+        gridFlowManager = new GridFlowManager(this);
     }
 
 }
