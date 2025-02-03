@@ -19,7 +19,6 @@ public class GridManager : Singleton<GridManager>
     private MoveValidator moveValidator;
     private GridShuffler gridShuffler;
     private GridFlowManager gridFlowManager;
-    private int tilesMovingCount;
 
     protected override void Awake()
     {
@@ -39,24 +38,14 @@ public class GridManager : Singleton<GridManager>
 
         grid = new Cell[rowCount, columnCount];
 
-        float screenHeight = Camera.main.orthographicSize * 2f;
-        float screenWidth = screenHeight * Camera.main.aspect;
-        float horizontalPadding = screenWidth * paddingPercentage;
-        float verticalPadding = screenHeight * paddingPercentage;
-        float usableWidth = screenWidth - (2 * horizontalPadding);
-        float usableHeight = screenHeight - (2 * verticalPadding);
-        float tileSize = Mathf.Min(usableWidth / columnCount, usableHeight / rowCount);
-
-        Vector2 startPosition = new Vector2(
-            -((columnCount * tileSize) / 2) + (tileSize / 2),
-            ((rowCount * tileSize) / 2) - (tileSize / 2)
-        );
+        float tileSize = CalculateTileSize();
+        Vector2 gridOffset = GetGridOffset(tileSize);
 
         for (int x = 0; x < columnCount; x++)
         {
             for (int y = 0; y < rowCount; y++)
             {
-                Vector2 worldPosition = startPosition + new Vector2(x * tileSize, -y * tileSize);
+                Vector2 worldPosition = gridOffset + new Vector2(x * tileSize, -y * tileSize);
                 Cell cell = InstantiateCell(new Vector2Int(x, y), worldPosition, tileSize);
                 grid[x, y] = cell;
                 CreateTile(cell, true);
@@ -68,18 +57,33 @@ public class GridManager : Singleton<GridManager>
         CheckForPossibleMoves();
     }
 
+    private float CalculateTileSize()
+    {
+        float screenHeight = Camera.main.orthographicSize * 2f;
+        float screenWidth = screenHeight * Camera.main.aspect;
+        float usableWidth = screenWidth * (1f - 2 * paddingPercentage);
+        float usableHeight = screenHeight * (1f - 2 * paddingPercentage);
+        return Mathf.Min(usableWidth / columnCount, usableHeight / rowCount);
+    }
+
+    private Vector2 GetGridOffset(float tileSize)
+    {
+        return new Vector2(
+            -((columnCount * tileSize) / 2) + (tileSize / 2),
+            ((rowCount * tileSize) / 2) - (tileSize / 2)
+        );
+    }
+
     private Cell InstantiateCell(Vector2Int gridPosition, Vector2 worldPosition, float tileSize)
     {
-        GameObject cellObj = Instantiate(cellPrefab, worldPosition, Quaternion.identity);
-        cellObj.transform.SetParent(transform);
+        GameObject cellObj = Instantiate(cellPrefab, worldPosition, Quaternion.identity, transform);
         Cell cell = cellObj.GetComponent<Cell>();
         cell.Initialize(gridPosition);
 
         SpriteRenderer sr = cellObj.GetComponent<SpriteRenderer>();
         if (sr != null)
         {
-            Vector2 spriteSize = sr.sprite.bounds.size;
-            sizeModifier = new Vector3(tileSize / spriteSize.x, tileSize / spriteSize.y, 1);
+            sizeModifier = Vector3.one * (tileSize / sr.sprite.bounds.size.x);
             cellObj.transform.localScale = sizeModifier;
         }
         return cell;
@@ -89,7 +93,6 @@ public class GridManager : Singleton<GridManager>
     {
         gridFlowManager.DropTiles(affectedColumns);
     }
-
 
     public Vector3 GetWorldPositionFromGridPosition(Vector2Int gridPosition)
     {
@@ -105,7 +108,6 @@ public class GridManager : Singleton<GridManager>
         Vector3 spawnPosition = isInitial ? cell.transform.position : new Vector3(cell.transform.position.x, cell.transform.position.y + 1.5f, 0);
 
         TileData tileData = TileDatabase.Instance.GetRandomTileData();
-        
         Tile tile = tilePool.GetFromPool();
         tile = TileFactory.CreateTile(tile, tileData, transform);
 
@@ -115,18 +117,7 @@ public class GridManager : Singleton<GridManager>
 
         if (!isInitial && tile is MovableTile movableTile)
         {
-            tilesMovingCount++;
-            movableTile.MoveToCell(cell, OnTileMovementComplete);
-        }
-    }
-
-    private void OnTileMovementComplete()
-    {
-        tilesMovingCount--;
-
-        if (tilesMovingCount == 0)
-        {
-            CheckForPossibleMoves();
+            gridFlowManager.RegisterMovingTile(movableTile, cell);
         }
     }
 
@@ -144,7 +135,7 @@ public class GridManager : Singleton<GridManager>
 
     public void ReturnTileToPool(Tile tile)
     {
-        tile.gameObject.SetActive(false); 
+        tile.gameObject.SetActive(false);
         tilePool.ReturnToPool(tile);
     }
 
