@@ -52,8 +52,14 @@ public class UIManager : Singleton<UIManager>
         endGameText.text = endGameInformation;
     }
 
+    private void ResetUI()
+    {
+        gameOverPanel.SetActive(false);
+    }
+
     public void OnRestartButtonClicked()
     {
-        SceneManager.LoadScene(0);
+        GameManager.Instance.ResetGame();
+        ResetUI();
     }
 }

@@ -12,9 +12,7 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
-        InitializeGoal();
         ResetGame();
-        ChangeState(GameState.WaitingForInput);
     }
 
     private void OnEnable()
@@ -40,10 +38,9 @@ public class GameManager : Singleton<GameManager>
 
         InitializeGoal();
 
-        ChangeState(GameState.WaitingForInput);
-
         GameEvents.OnMoveMade?.Invoke(currentMoves);
         GameEvents.OnGoalTileCountChanged?.Invoke(targetCount);
+        ChangeState(GameState.WaitingForInput);
     }
 
     private void OnTileDestroyed(Tile tile)
@@ -79,9 +76,7 @@ public class GameManager : Singleton<GameManager>
 
 
     public void ChangeState(GameState newState)
-    {
-        if (CurrentState == newState || CurrentState == GameState.GameWon || CurrentState == GameState.GameOver) return;
-        
+    {        
         CurrentState = newState;
         GameEvents.OnGameStateChanged?.Invoke(newState);
     }
