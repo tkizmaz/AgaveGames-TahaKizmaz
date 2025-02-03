@@ -15,6 +15,7 @@ public class GridManager : Singleton<GridManager>
     private GridShuffler gridShuffler;
     private GridFlowManager gridFlowManager;
     private GameSettings gameSettings;
+    private GridInfo gridInfo;
 
     void Start()
     {
@@ -43,6 +44,7 @@ public class GridManager : Singleton<GridManager>
             }
         }
 
+        SetGridInfo();
         InitializeManagers();
         CheckForPossibleMoves();
     }
@@ -155,11 +157,15 @@ public class GridManager : Singleton<GridManager>
         CheckForPossibleMoves();
     }
 
-    private void InitializeManagers()
+    private void SetGridInfo()
     {
-        moveValidator = new MoveValidator();
-        gridShuffler = new GridShuffler();
-        gridFlowManager = new GridFlowManager(this);
+        gridInfo = new GridInfo(grid, gameSettings.RowCount, gameSettings.ColumnCount);
     }
 
+    private void InitializeManagers()
+    {
+        moveValidator = new MoveValidator(gridInfo);
+        gridShuffler = new GridShuffler(gridInfo);
+        gridFlowManager = new GridFlowManager(gridInfo);
+    }
 }

@@ -3,20 +3,15 @@ using UnityEngine;
 
 public class MoveValidator
 {
-    private GridManager gridManager;
-
-    public MoveValidator()
+    private GridInfo gridInfo;
+    public MoveValidator(GridInfo gridInfo)
     {
-        this.gridManager = GridManager.Instance;
+        this.gridInfo = gridInfo;
     }
 
     public bool HasAvailableMoves()
     {
-        Cell[,] grid = gridManager.Grid;
-        int columnCount = GameSettings.Instance.ColumnCount;
-        int rowCount = GameSettings.Instance.RowCount;
-
-        bool[,] visited = new bool[columnCount, rowCount];
+        bool[,] visited = new bool[gridInfo.ColumnCount, gridInfo.RowCount];
         List<Vector2Int> tileCheckOrder = GetTileCheckOrder();
 
         foreach (Vector2Int pos in tileCheckOrder)
@@ -24,9 +19,9 @@ public class MoveValidator
             int x = pos.x;
             int y = pos.y;
 
-            if (!grid[x, y].IsOccupied) continue;
+            if (!gridInfo.Grid[x, y].IsOccupied) continue;
 
-            Tile tile = grid[x, y].CurrentTile;
+            Tile tile = gridInfo.Grid[x, y].CurrentTile;
             
             if (!(tile.TileData is ChipData chipData)) continue;
 
@@ -43,13 +38,9 @@ public class MoveValidator
 
     private void FindConnectedTiles(int x, int y, ChipColor color, List<Cell> connectedTiles, bool[,] visited)
     {
-        Cell[,] grid = gridManager.Grid;
-        int columnCount = GameSettings.Instance.ColumnCount;
-        int rowCount = GameSettings.Instance.RowCount;
+        if (x < 0 || x >= gridInfo.ColumnCount || y < 0 || y >= gridInfo.RowCount || visited[x, y]) return;
 
-        if (x < 0 || x >= columnCount || y < 0 || y >= rowCount || visited[x, y]) return;
-
-        Cell cell = grid[x, y];
+        Cell cell = gridInfo.Grid[x, y];
         if (!cell.IsOccupied || !(cell.CurrentTile.TileData is ChipData chipData) || chipData.chipColor != color) return;
 
         visited[x, y] = true;
@@ -63,17 +54,14 @@ public class MoveValidator
 
     private List<Vector2Int> GetTileCheckOrder()
     {
-        int columnCount = GameSettings.Instance.ColumnCount;
-        int rowCount = GameSettings.Instance.RowCount;
-
         List<Vector2Int> positions = new List<Vector2Int>();
 
-        int centerX = columnCount / 2;
-        int centerY = rowCount / 2;
+        int centerX = gridInfo.ColumnCount / 2;
+        int centerY = gridInfo.RowCount / 2;
 
-        for (int x = 0; x < columnCount; x++)
+        for (int x = 0; x < gridInfo.ColumnCount; x++)
         {
-            for (int y = 0; y < rowCount; y++)
+            for (int y = 0; y < gridInfo.RowCount; y++)
             {
                 positions.Add(new Vector2Int(x, y));
             }

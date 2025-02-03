@@ -4,16 +4,15 @@ using DG.Tweening;
 
 public class GridShuffler
 {
-    private GridManager gridManager;
-
-    public GridShuffler()
+    private GridInfo gridInfo;
+    public GridShuffler(GridInfo gridInfo)
     {
-        this.gridManager = GridManager.Instance;
+        this.gridInfo = gridInfo;
     }
 
     public void ShuffleBoard()
     {
-        Cell[,] grid = gridManager.Grid;
+        Cell[,] grid = gridInfo.Grid;
         int columnCount = GameSettings.Instance.ColumnCount;
         int rowCount = GameSettings.Instance.RowCount;
 

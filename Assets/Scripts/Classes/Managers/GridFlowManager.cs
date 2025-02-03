@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class GridFlowManager
 {
-    private GridManager gridManager;
+    private GridInfo gridInfo;
     private int tilesMovingCount;
 
-    public GridFlowManager(GridManager gridManager)
+    public GridFlowManager(GridInfo gridInfo)
     {
-        this.gridManager = gridManager;
+        this.gridInfo = gridInfo;
     }
 
     public void DropTiles(List<int> affectedColumns)
@@ -26,7 +26,7 @@ public class GridFlowManager
 
             for (int y = rowCount - 1; y >= 0; y--)
             {
-                Cell cell = gridManager.Grid[x, y];
+                Cell cell = gridInfo.Grid[x, y];
 
                 if (!cell.IsOccupied)
                 {
@@ -49,11 +49,11 @@ public class GridFlowManager
 
                     if (lowestEmptyRow != -1 && y < lowestEmptyRow)
                     {
-                        gridManager.Grid[x, lowestEmptyRow].SetTile(tile);
+                        gridInfo.Grid[x, lowestEmptyRow].SetTile(tile);
 
                         if (tile is MovableTile movableTile)
                         {
-                            movableTile.MoveToCell(gridManager.Grid[x, lowestEmptyRow], OnTileMovementComplete);
+                            movableTile.MoveToCell(gridInfo.Grid[x, lowestEmptyRow], OnTileMovementComplete);
                             tilesMovingCount++;
                         }
 
@@ -83,7 +83,7 @@ public class GridFlowManager
             {
                 int y = i;
 
-                gridManager.CreateTile(gridManager.Grid[x, y]); 
+                GridManager.Instance.CreateTile(gridInfo.Grid[x, y]); 
             }
         }
 
@@ -99,7 +99,7 @@ public class GridFlowManager
 
         if (tilesMovingCount == 0)
         {
-            gridManager.CheckForPossibleMoves();
+            GridManager.Instance.CheckForPossibleMoves();
         }
     }
 
