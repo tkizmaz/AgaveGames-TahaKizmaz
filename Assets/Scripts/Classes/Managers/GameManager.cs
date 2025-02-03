@@ -8,6 +8,7 @@ public class GameManager : Singleton<GameManager>
     private int collectedTiles;
     public GameState CurrentState { get; private set; }
     private TileData goalTileData; 
+    private bool isFirstGame = true;
 
     private void Start()
     {
@@ -37,9 +38,17 @@ public class GameManager : Singleton<GameManager>
 
         InitializeGoal();
 
+        if(isFirstGame) isFirstGame = false;
+        else
+        {
+            GridManager.Instance.ResetGrid();
+        }
+
         GameEvents.OnMoveMade?.Invoke(currentMoves);
         GameEvents.OnGoalTileCountChanged?.Invoke(targetCount);
         ChangeState(GameState.WaitingForInput);
+
+        UIManager.Instance.ResetUI();
     }
 
     private void OnTileDestroyed(Tile tile)

@@ -52,7 +52,7 @@ public class UIManager : Singleton<UIManager>
         endGameText.text = endGameInformation;
     }
 
-    private void ResetUI()
+    public void ResetUI()
     {
         gameOverPanel.SetActive(false);
     }
@@ -60,6 +60,5 @@ public class UIManager : Singleton<UIManager>
     public void OnRestartButtonClicked()
     {
         GameManager.Instance.ResetGame();
-        ResetUI();
     }
 }
