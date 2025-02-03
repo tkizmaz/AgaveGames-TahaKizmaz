@@ -87,7 +87,6 @@ public class LinkManager : MonoBehaviour
         }
     }
 
-
     private void FinishLinking()
     {
         if(linkedCells.Count >= 3)
