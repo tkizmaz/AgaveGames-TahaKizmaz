@@ -4,17 +4,17 @@ using UnityEngine;
 public class GridFlowManager
 {
     private GridInfo gridInfo;
-    private int tilesMovingCount;
+    private TileMovementManager tileMovementManager;
 
-    public GridFlowManager(GridInfo gridInfo)
+    public GridFlowManager(GridInfo gridInfo, TileMovementManager tileMovementManager)
     {
         this.gridInfo = gridInfo;
+        this.tileMovementManager = tileMovementManager;
     }
 
     public void DropTiles(List<int> affectedColumns)
     {
         GameManager.Instance.ChangeState(GameState.TilesMoving);
-        tilesMovingCount = 0;
         int rowCount = GameSettings.Instance.RowCount;
         Dictionary<int, int> emptySpacesPerColumn = new Dictionary<int, int>();
 
@@ -53,8 +53,7 @@ public class GridFlowManager
 
                         if (tile is MovableTile movableTile)
                         {
-                            movableTile.MoveToCell(gridInfo.Grid[x, lowestEmptyRow], OnTileMovementComplete);
-                            tilesMovingCount++;
+                            tileMovementManager.RegisterMovingTile(movableTile, gridInfo.Grid[x, lowestEmptyRow]);
                         }
 
                         cell.ClearTileReference();
@@ -86,26 +85,5 @@ public class GridFlowManager
                 GridManager.Instance.CreateTile(gridInfo.Grid[x, y]); 
             }
         }
-
-        if (tilesMovingCount == 0)
-        {
-            OnTileMovementComplete();
-        }
-    }
-
-    private void OnTileMovementComplete()
-    {
-        tilesMovingCount--;
-
-        if (tilesMovingCount == 0)
-        {
-            GridManager.Instance.CheckForPossibleMoves();
-        }
-    }
-
-    public void RegisterMovingTile(MovableTile tile, Cell targetCell)
-    {
-        tilesMovingCount++;
-        tile.MoveToCell(targetCell, OnTileMovementComplete);
     }
 }

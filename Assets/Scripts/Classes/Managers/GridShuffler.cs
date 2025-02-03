@@ -5,9 +5,12 @@ using DG.Tweening;
 public class GridShuffler
 {
     private GridInfo gridInfo;
-    public GridShuffler(GridInfo gridInfo)
+    private TileMovementManager tileMovementManager = new TileMovementManager();
+
+    public GridShuffler(GridInfo gridInfo, TileMovementManager tileMovementManager)
     {
         this.gridInfo = gridInfo;
+        this.tileMovementManager = tileMovementManager;
     }
 
     public void ShuffleBoard()
@@ -46,7 +49,7 @@ public class GridShuffler
                     Tile tile = allTiles[index++];
                     if (tile is MovableTile movableTile)
                     {
-                        movableTile.MoveToCell(grid[x, y]);
+                        tileMovementManager.RegisterMovingTile(movableTile, grid[x, y]);
                     }
                     grid[x, y].SetTile(tile);
                 }

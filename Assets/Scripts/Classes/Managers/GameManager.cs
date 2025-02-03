@@ -8,7 +8,7 @@ public class GameManager : Singleton<GameManager>
     private TileData goalTileData; 
     private bool isFirstGame = true;
     private GameSettings gameSettings;
-
+    
     private void Start()
     {
         gameSettings = GameSettings.Instance;

@@ -16,11 +16,13 @@ public class GridManager : Singleton<GridManager>
     private GridFlowManager gridFlowManager;
     private GameSettings gameSettings;
     private GridInfo gridInfo;
+    private TileMovementManager tileMovementManager;
 
     void Start()
     {
         gameSettings = GameSettings.Instance;
         tilePool = new ObjectPool<Tile>(tilePrefab.GetComponent<Tile>(), gameSettings.RowCount * gameSettings.ColumnCount, transform);
+        tileMovementManager = new TileMovementManager();
         GenerateGrid();
     }
 
@@ -109,7 +111,7 @@ public class GridManager : Singleton<GridManager>
 
         if (!isInitial && tile is MovableTile movableTile)
         {
-            gridFlowManager.RegisterMovingTile(movableTile, cell);
+            tileMovementManager.RegisterMovingTile(movableTile, cell);
         }
     }
 
@@ -137,10 +139,12 @@ public class GridManager : Singleton<GridManager>
         {
             GameManager.Instance.ChangeState(GameState.Shuffling);
             gridShuffler.ShuffleBoard();
-            yield return new WaitForSeconds(0.5f);
+
+            yield return new WaitUntil(() => !tileMovementManager.HasMovingTiles());
         }
         GameManager.Instance.ChangeState(GameState.WaitingForInput);
     }
+
 
     public void ResetGrid()
     {
@@ -165,7 +169,7 @@ public class GridManager : Singleton<GridManager>
     private void InitializeManagers()
     {
         moveValidator = new MoveValidator(gridInfo);
-        gridShuffler = new GridShuffler(gridInfo);
-        gridFlowManager = new GridFlowManager(gridInfo);
+        gridShuffler = new GridShuffler(gridInfo, tileMovementManager);
+        gridFlowManager = new GridFlowManager(gridInfo, tileMovementManager);
     }
 }
