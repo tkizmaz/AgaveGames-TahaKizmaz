@@ -52,7 +52,7 @@ public class GameManager : Singleton<GameManager>
 
         bool isGoalTile = tile.TileData == goalTileData;
 
-        if (goalTileData)
+        if (isGoalTile)
         {
             collectedTiles++;
             GameEvents.OnGoalTileCountChanged?.Invoke(targetCount - collectedTiles);
