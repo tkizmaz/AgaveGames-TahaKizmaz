@@ -102,4 +102,10 @@ public class GridFlowManager
             gridManager.CheckForPossibleMoves();
         }
     }
+
+    public void RegisterMovingTile(MovableTile tile, Cell targetCell)
+    {
+        tilesMovingCount++;
+        tile.MoveToCell(targetCell, OnTileMovementComplete);
+    }
 }
