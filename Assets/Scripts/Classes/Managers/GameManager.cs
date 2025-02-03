@@ -8,16 +8,11 @@ public class GameManager : Singleton<GameManager>
     private int collectedTiles;
     public GameState CurrentState { get; private set; }
     
-    private TileData targetTileData; 
-
-    protected override void Awake()
-    {
-        base.Awake();
-    }
+    private TileData goalTileData; 
 
     private void Start()
     {
-        InitializeTarget();
+        InitializeGoal();
         ResetGame();
         ChangeState(GameState.WaitingForInput);
     }
@@ -32,17 +27,20 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnTileDestroyed -= OnTileDestroyed;
     }
 
-    private void InitializeTarget()
+    private void InitializeGoal()
     {
-        targetTileData = TileDatabase.Instance.GetRandomTileData();
-        GameEvents.OnGoalTileChanged?.Invoke(targetTileData);
+        goalTileData = TileDatabase.Instance.GetRandomTileData();
+        GameEvents.OnGoalTileChanged?.Invoke(goalTileData);
     }
 
     public void ResetGame()
     {
         currentMoves = maxMoves;
         collectedTiles = 0;
-        CurrentState = GameState.WaitingForInput;
+
+        InitializeGoal();
+
+        ChangeState(GameState.WaitingForInput);
 
         GameEvents.OnMoveMade?.Invoke(currentMoves);
         GameEvents.OnGoalTileCountChanged?.Invoke(targetCount);
@@ -52,7 +50,9 @@ public class GameManager : Singleton<GameManager>
     {
         if (tile == null || tile.TileData == null) return;
 
-        if (tile.TileData == targetTileData) 
+        bool isGoalTile = tile.TileData == goalTileData;
+
+        if (goalTileData)
         {
             collectedTiles++;
             GameEvents.OnGoalTileCountChanged?.Invoke(targetCount - collectedTiles);
@@ -64,16 +64,19 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+
     public void OnMoveMade()
     {
+        if (currentMoves <= 0) return; 
         currentMoves--;
-
         GameEvents.OnMoveMade?.Invoke(currentMoves);
+
         if (currentMoves <= 0)
         {
             ChangeState(GameState.GameOver);
         }
     }
+
 
     public void ChangeState(GameState newState)
     {
