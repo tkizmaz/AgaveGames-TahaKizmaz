@@ -117,13 +117,12 @@ public class LinkManager : MonoBehaviour
 
     private bool CheckIfTilesAreNeighbors(Cell a, Cell b)
     {
-        return (Mathf.Abs(a.GridPosition.x - b.GridPosition.x) == 1 && a.GridPosition.y == b.GridPosition.y) || (Mathf.Abs(a.GridPosition.y - b.GridPosition.y) == 1 && a.GridPosition.x == b.GridPosition.x);
+        return Mathf.Abs(a.GridPosition.x - b.GridPosition.x) + Mathf.Abs(a.GridPosition.y - b.GridPosition.y) == 1;
     }
 
     private void ChangeTileHighlight(Tile tile, bool isSelected)
     {
-        ISelectable selectableTile = tile as ISelectable;
-        if(selectableTile != null)
+        if(tile is ISelectable selectableTile)
         {
             selectableTile.SetSelected(isSelected);
         }
