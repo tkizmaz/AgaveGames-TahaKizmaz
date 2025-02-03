@@ -10,7 +10,7 @@ public class TileDatabase : Singleton<TileDatabase>
         {
             return null;
         }
-
+        
         return allTileDataList[Random.Range(0, allTileDataList.Count)];
     }
 }

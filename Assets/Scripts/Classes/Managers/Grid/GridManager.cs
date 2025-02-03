@@ -145,7 +145,6 @@ public class GridManager : Singleton<GridManager>
         GameManager.Instance.ChangeState(GameState.WaitingForInput);
     }
 
-
     public void ResetGrid()
     {
         foreach (var cell in grid)
