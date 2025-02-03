@@ -15,7 +15,7 @@ public class LinkManager : MonoBehaviour
 
     private void Update()
     {
-        GameState gameState = GameManager.Instance.CurrentState;
+        GameState gameState = GameManager.Instance.CurrentGameState;
         if(Input.GetMouseButtonDown(0) && gameState == GameState.WaitingForInput)
         {
             StartLinking();

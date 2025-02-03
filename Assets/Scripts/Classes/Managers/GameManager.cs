@@ -4,11 +4,11 @@ public class GameManager : Singleton<GameManager>
 {
     private int currentMoves;
     private int collectedTiles;
-    public GameState CurrentState { get; private set; }
+    public GameState CurrentGameState { get; private set; }
     private TileData goalTileData; 
     private bool isFirstGame = true;
     private GameSettings gameSettings;
-    
+
     private void Start()
     {
         gameSettings = GameSettings.Instance;
@@ -46,7 +46,7 @@ public class GameManager : Singleton<GameManager>
 
         GameEvents.OnMoveMade?.Invoke(currentMoves);
         GameEvents.OnGoalTileCountChanged?.Invoke(gameSettings.GoalTileCount);
-        CurrentState = GameState.WaitingForInput;
+        CurrentGameState = GameState.WaitingForInput;
         UIManager.Instance.ResetUI();
     }
 
@@ -84,8 +84,8 @@ public class GameManager : Singleton<GameManager>
 
     public void ChangeState(GameState newState)
     {        
-        if (CurrentState == GameState.GameOver || CurrentState == GameState.GameWon) return;
-        CurrentState = newState;
+        if (CurrentGameState == GameState.GameOver || CurrentGameState == GameState.GameWon) return;
+        CurrentGameState = newState;
         GameEvents.OnGameStateChanged?.Invoke(newState);
     }
 }
