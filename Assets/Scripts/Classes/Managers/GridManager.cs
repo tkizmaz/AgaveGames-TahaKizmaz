@@ -20,12 +20,6 @@ public class GridManager : Singleton<GridManager>
     private GridShuffler gridShuffler;
     private GridFlowManager gridFlowManager;
 
-    protected override void Awake()
-    {
-        base.Awake();
-        gridFlowManager = new GridFlowManager(this);
-    }
-
     void Start()
     {
         tilePool = new ObjectPool<Tile>(tilePrefab.GetComponent<Tile>(), rowCount * columnCount, transform);
@@ -54,6 +48,7 @@ public class GridManager : Singleton<GridManager>
 
         moveValidator = new MoveValidator();
         gridShuffler = new GridShuffler();
+        gridFlowManager = new GridFlowManager(this);
         CheckForPossibleMoves();
     }
 
