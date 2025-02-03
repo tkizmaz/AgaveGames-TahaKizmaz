@@ -149,4 +149,20 @@ public class GridManager : Singleton<GridManager>
         }
         GameManager.Instance.ChangeState(GameState.WaitingForInput);
     }
+
+    public void ResetGrid()
+    {
+        foreach (var cell in grid)
+        {
+            if (cell.IsOccupied)
+            {
+                cell.RemoveCurrentTile();  
+            }
+
+            CreateTile(cell, true);
+        }
+
+        CheckForPossibleMoves();
+    }
+
 }
