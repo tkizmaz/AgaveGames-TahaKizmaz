@@ -2,8 +2,7 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour, IPoolable
 {
-    [SerializeField]
-    protected TileData tileData;
+    [SerializeField] protected TileData tileData;
     public TileData TileData => tileData;
 
     protected SpriteRenderer spriteRenderer;
