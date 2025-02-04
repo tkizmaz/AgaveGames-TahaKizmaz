@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Cell : MonoBehaviour
 {
-    Tile currentTile;
+    private Tile currentTile;
     public Tile CurrentTile { get => currentTile; set => currentTile = value; }
     private Vector2Int gridPosition;
     public Vector2Int GridPosition { get => gridPosition; set => gridPosition = value; }
