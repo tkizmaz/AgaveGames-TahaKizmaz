@@ -99,7 +99,7 @@ public class GridManager : Singleton<GridManager>
 
     public void CreateTile(Cell cell, bool isInitial = false)
     {
-        Vector3 spawnPosition = isInitial ? cell.transform.position : new Vector3(cell.transform.position.x, cell.transform.position.y + 1.5f, 0);
+        Vector3 spawnPosition = isInitial ? cell.transform.position : new Vector3(cell.transform.position.x, cell.transform.position.y + 3f, 0);
 
         TileData tileData = TileDatabase.Instance.GetRandomTileData();
         Tile tile = tilePool.GetFromPool();
