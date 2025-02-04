@@ -76,9 +76,8 @@ public class LinkManager : MonoBehaviour
             {
                 Cell lastCell = linkedCells[linkedCells.Count - 1];
 
-                if (CheckIfTilesAreNeighbors(lastCell, newCell) && 
-                    lastCell.CurrentTile.TileData == newCell.CurrentTile.TileData && 
-                    newCell.CurrentTile.TileData.selectableType == TileSelectableType.Selectable)
+                bool isTileValid = lastCell.CurrentTile.TileData == newCell.CurrentTile.TileData && newCell.CurrentTile.TileData.selectableType == TileSelectableType.Selectable;
+                if (CheckIfTilesAreNeighbors(lastCell, newCell) && isTileValid)
                 {
                     linkedCells.Add(newCell);
                     ChangeTileHighlight(newCell.CurrentTile, true);
