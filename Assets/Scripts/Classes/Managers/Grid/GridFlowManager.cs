@@ -21,7 +21,6 @@ public class GridFlowManager
         foreach (int x in affectedColumns)
         {
             int lowestEmptyRow = -1;
-            bool foundImmovable = false;
             emptySpacesPerColumn[x] = 0;
 
             for (int y = rowCount - 1; y >= 0; y--)
@@ -38,17 +37,9 @@ public class GridFlowManager
                 }
                 else
                 {
-                    Tile tile = cell.CurrentTile;
-
-                    if (tile.TileData.moveType == TileMoveType.Immovable)
-                    {
-                        foundImmovable = true;
-                        lowestEmptyRow = -1;
-                        continue;
-                    }
-
                     if (lowestEmptyRow != -1 && y < lowestEmptyRow)
                     {
+                        Tile tile = cell.CurrentTile;
                         gridInfo.Grid[x, lowestEmptyRow].SetTile(tile);
 
                         if (tile is MovableTile movableTile)
@@ -59,15 +50,10 @@ public class GridFlowManager
                         cell.ClearTileReference();
                         lowestEmptyRow--;
                     }
-
-                    if (foundImmovable && tile.TileData.moveType == TileMoveType.Movable)
-                    {
-                        lowestEmptyRow = y;
-                    }
                 }
             }
         }
-
+        
         RefillTiles(emptySpacesPerColumn);
     }
 
@@ -81,9 +67,9 @@ public class GridFlowManager
             for (int i = 0; i < emptySpaces; i++)
             {
                 int y = i;
-
-                GridManager.Instance.CreateTile(gridInfo.Grid[x, y]); 
+                GridManager.Instance.CreateTile(gridInfo.Grid[x, y]);
             }
         }
     }
+
 }
