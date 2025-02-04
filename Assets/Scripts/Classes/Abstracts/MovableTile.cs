@@ -10,7 +10,7 @@ public abstract class MovableTile : Tile
     
         Vector3 newPosition = targetCell.transform.position;
         float distance = Vector3.Distance(transform.position, newPosition);
-        float moveTime = Mathf.Clamp(distance * 0.5f, 0.2f, 1.0f);
+        float moveTime = Mathf.Sqrt(distance) * 0.5f;
         transform.DOMove(newPosition, moveTime).SetEase(Ease.OutBounce).OnComplete(() =>
         {
             OnComplete?.Invoke();
