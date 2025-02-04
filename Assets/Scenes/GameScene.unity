@@ -531,7 +531,7 @@ MonoBehaviour:
   rowCount: 8
   columnCount: 8
   maxMoves: 10
-  goalScore: 100
+  goalScore: 500
 --- !u!4 &587788176
 Transform:
   m_ObjectHideFlags: 0

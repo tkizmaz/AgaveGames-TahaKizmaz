@@ -9,11 +9,14 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private TMP_Text endGameText;
     [SerializeField] private TMP_Text scoreValueText;
     [SerializeField] private GameObject gameOverPanel;
+    private int targetScore;
+    private int currentScore;
 
     private void OnEnable()
     {
         GameEvents.OnMoveMade += UpdateMovesUI;
         GameEvents.OnScoreChanged += UpdateScoreUI;
+        GameEvents.OnGoalScoreChanged += UpdateGoalScoreUI;
         GameEvents.OnGameStateChanged += OnGameStateChanged;
     }
 
@@ -21,17 +24,30 @@ public class UIManager : Singleton<UIManager>
     {
         GameEvents.OnMoveMade -= UpdateMovesUI;
         GameEvents.OnScoreChanged -= UpdateScoreUI;
+        GameEvents.OnGoalScoreChanged -= UpdateGoalScoreUI;
         GameEvents.OnGameStateChanged -= OnGameStateChanged;
+    }
+
+    private void UpdateScoreUI(int newScore)
+    {
+        currentScore = newScore;
+        UpdateScoreDisplay();
+    }
+
+    private void UpdateGoalScoreUI(int newTargetScore)
+    {
+        targetScore = newTargetScore;
+        UpdateScoreDisplay();
+    }
+
+    private void UpdateScoreDisplay()
+    {
+        scoreValueText.text = $"{currentScore} / {targetScore}";
     }
 
     private void UpdateMovesUI(int movesLeft)
     {
         movesValueText.text = movesLeft.ToString();
-    }
-
-    private void UpdateScoreUI(int currentScore)
-    {
-        scoreValueText.text = currentScore.ToString();
     }
 
     private void OnGameStateChanged(GameState state)

@@ -36,6 +36,7 @@ public class GameManager : Singleton<GameManager>
 
         GameEvents.OnMoveMade?.Invoke(currentMoves);
         GameEvents.OnScoreChanged?.Invoke(currentScore);
+        GameEvents.OnGoalScoreChanged?.Invoke(gameSettings.GoalScore);
         CurrentGameState = GameState.WaitingForInput;
         UIManager.Instance.ResetUI();
     }
