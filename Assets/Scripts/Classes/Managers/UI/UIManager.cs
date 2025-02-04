@@ -36,11 +36,11 @@ public class UIManager : Singleton<UIManager>
 
     private void OnGameStateChanged(GameState state)
     {
-        if (state == GameState.GameOver || state == GameState.GameWon)
+        if (state == GameState.GameLost || state == GameState.GameWon)
         {
             gameOverPanel.SetActive(true);
         }
-        string endGameInformation = state == GameState.GameOver ? "Game Over" : "You Win!";
+        string endGameInformation = state == GameState.GameLost ? "You Lost" : "You Win!";
         endGameText.text = endGameInformation;
     }
 

@@ -6,5 +6,5 @@ public enum GameState
     Shuffling,  
     CheckingMatches,
     GameWon,
-    GameOver         
+    GameLost         
 }
