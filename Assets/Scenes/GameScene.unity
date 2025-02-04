@@ -530,7 +530,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rowCount: 8
   columnCount: 8
-  maxMoves: 10
+  maxMoves: 15
   goalScore: 500
 --- !u!4 &587788176
 Transform:
