@@ -25,10 +25,8 @@ public class MoveValidator
             
             if (!(tile.TileData is ChipData chipData)) continue;
 
-            ChipColor chipColor = chipData.chipColor;
-
             List<Cell> connectedTiles = new List<Cell>();
-            FindConnectedTiles(x, y, chipColor, connectedTiles, visited);
+            FindConnectedTiles(x, y, chipData, connectedTiles, visited);
 
             if (connectedTiles.Count >= 3) return true;
         }
@@ -36,20 +34,20 @@ public class MoveValidator
         return false;
     }
 
-    private void FindConnectedTiles(int x, int y, ChipColor color, List<Cell> connectedTiles, bool[,] visited)
+    private void FindConnectedTiles(int x, int y, ChipData referenceChip, List<Cell> connectedTiles, bool[,] visited)
     {
         if (x < 0 || x >= gridInfo.ColumnCount || y < 0 || y >= gridInfo.RowCount || visited[x, y]) return;
 
         Cell cell = gridInfo.Grid[x, y];
-        if (!cell.IsOccupied || !(cell.CurrentTile.TileData is ChipData chipData) || chipData.chipColor != color) return;
+        if (!cell.IsOccupied || cell.CurrentTile.TileData != referenceChip) return;
 
         visited[x, y] = true;
         connectedTiles.Add(cell);
 
-        FindConnectedTiles(x + 1, y, color, connectedTiles, visited);
-        FindConnectedTiles(x - 1, y, color, connectedTiles, visited);
-        FindConnectedTiles(x, y + 1, color, connectedTiles, visited);
-        FindConnectedTiles(x, y - 1, color, connectedTiles, visited);
+        FindConnectedTiles(x + 1, y, referenceChip, connectedTiles, visited);
+        FindConnectedTiles(x - 1, y, referenceChip, connectedTiles, visited);
+        FindConnectedTiles(x, y + 1, referenceChip, connectedTiles, visited);
+        FindConnectedTiles(x, y - 1, referenceChip, connectedTiles, visited);
     }
 
     private List<Vector2Int> GetTileCheckOrder()
