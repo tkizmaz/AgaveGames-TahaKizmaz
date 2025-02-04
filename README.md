@@ -1,6 +1,6 @@
 # Match-3 Link Game
 
-A simple yet polished **Match-3 Link Game** developed in **Unity 2021.3.45f1**.  
+A simple yet polished **Match-3 Link Game** developed in **Unity 2021.3.22f1**.  
 Players **link** three or more adjacent tiles of the same type to clear them.
 
 ## 📌 Features
