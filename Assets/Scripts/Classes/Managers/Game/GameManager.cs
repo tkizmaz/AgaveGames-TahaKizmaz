@@ -4,9 +4,8 @@ public class GameManager : Singleton<GameManager>
 {
     private int currentMoves;
     private int currentScore;
-    public GameState CurrentGameState { get; private set; }
-    private TileData goalTileData; 
     private bool isFirstGame = true;
+    public GameState CurrentGameState { get; private set; }
     private GameSettings gameSettings;
 
     private void Start()
@@ -48,7 +47,6 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnScoreChanged?.Invoke(currentScore);
     }
 
-
     public void OnMoveMade()
     {
         if (currentMoves <= 0) return; 
@@ -60,7 +58,6 @@ public class GameManager : Singleton<GameManager>
             CheckGameOver();
         }
     }
-
 
     private void CheckGameOver()
     {

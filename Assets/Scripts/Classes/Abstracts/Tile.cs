@@ -4,7 +4,6 @@ public class Tile : MonoBehaviour, IPoolable
 {
     [SerializeField] protected TileData tileData;
     public TileData TileData => tileData;
-
     protected SpriteRenderer spriteRenderer;
 
     protected virtual void Awake()
