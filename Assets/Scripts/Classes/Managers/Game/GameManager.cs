@@ -3,7 +3,7 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
     private int currentMoves;
-    private int collectedTiles;
+    private int currentScore;
     public GameState CurrentGameState { get; private set; }
     private TileData goalTileData; 
     private bool isFirstGame = true;
@@ -25,19 +25,10 @@ public class GameManager : Singleton<GameManager>
         GameEvents.OnTileDestroyed -= OnTileDestroyed;
     }
 
-    private void InitializeGoal()
-    {
-        goalTileData = TileDatabase.Instance.GetRandomTileData();
-        GameEvents.OnGoalTileChanged?.Invoke(goalTileData);
-    }
-
     public void ResetGame()
     {
         currentMoves = gameSettings.MaxMoves;
-        collectedTiles = 0;
-
-        InitializeGoal();
-
+        currentScore = 0;
         if(isFirstGame) isFirstGame = false;
         else
         {
@@ -45,27 +36,16 @@ public class GameManager : Singleton<GameManager>
         }
 
         GameEvents.OnMoveMade?.Invoke(currentMoves);
-        GameEvents.OnGoalTileCountChanged?.Invoke(gameSettings.GoalTileCount);
+        GameEvents.OnScoreChanged?.Invoke(currentScore);
         CurrentGameState = GameState.WaitingForInput;
         UIManager.Instance.ResetUI();
     }
 
     private void OnTileDestroyed(Tile tile)
     {
-        if (tile == null || tile.TileData == null) return;
-
-        bool isGoalTile = tile.TileData == goalTileData;
-
-        if (isGoalTile)
-        {
-            collectedTiles++;
-            GameEvents.OnGoalTileCountChanged?.Invoke(gameSettings.GoalTileCount - collectedTiles);
-
-            if (collectedTiles >= gameSettings.GoalTileCount)
-            {
-                ChangeState(GameState.GameWon);
-            }
-        }
+        if(tile == null) return;
+        currentScore += tile.TileData.scoreValue;
+        GameEvents.OnScoreChanged?.Invoke(currentScore);
     }
 
 
@@ -75,12 +55,24 @@ public class GameManager : Singleton<GameManager>
         currentMoves--;
         GameEvents.OnMoveMade?.Invoke(currentMoves);
 
-        if (currentMoves <= 0)
+        if (currentMoves == 0)
+        {
+            CheckGameOver();
+        }
+    }
+
+
+    private void CheckGameOver()
+    {
+        if(currentScore >= gameSettings.GoalScore)
+        {
+            ChangeState(GameState.GameWon);
+        }
+        else
         {
             ChangeState(GameState.GameOver);
         }
     }
-
 
     public void ChangeState(GameState newState)
     {        

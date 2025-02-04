@@ -17,4 +17,5 @@ MonoBehaviour:
   selectableType: 0
   tileType: 0
   tileSprite: {fileID: 21300000, guid: 698c9d6373512444b887849417145a7f, type: 3}
+  scoreValue: 10
   chipColor: 0

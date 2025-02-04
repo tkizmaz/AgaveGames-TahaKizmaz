@@ -10,10 +10,10 @@ public class GameSettings : Singleton<GameSettings>
 
     [Header("Game Rules Settings")]
     [SerializeField] private int maxMoves = 10;
-    [SerializeField] private int goalTileCount = 20;
+    [SerializeField] private int goalScore = 100;
 
     public int RowCount => rowCount;
     public int ColumnCount => columnCount;
     public int MaxMoves => maxMoves;
-    public int GoalTileCount => goalTileCount;
+    public int GoalScore => goalScore;
 }

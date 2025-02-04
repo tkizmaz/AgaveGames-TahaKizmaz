@@ -8,4 +8,5 @@ public class TileData : ScriptableObject
     public TileSelectableType selectableType;
     public TileType tileType;
     public Sprite tileSprite;
+    public int scoreValue;
 }

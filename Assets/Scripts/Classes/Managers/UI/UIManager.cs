@@ -7,23 +7,21 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private TMP_Text movesValueText; 
     [SerializeField] private TMP_Text targetTileCountText; 
     [SerializeField] private TMP_Text endGameText;
-    [SerializeField] private Image targetTileImage; 
+    [SerializeField] private TMP_Text scoreValueText;
     [SerializeField] private GameObject gameOverPanel;
 
     private void OnEnable()
     {
         GameEvents.OnMoveMade += UpdateMovesUI;
-        GameEvents.OnGoalTileChanged += SetTargetUI;
-        GameEvents.OnGoalTileCountChanged += UpdateTargetTileCount; 
+        GameEvents.OnScoreChanged += UpdateScoreUI;
         GameEvents.OnGameStateChanged += OnGameStateChanged;
-
     }
 
     private void OnDisable()
     {
         GameEvents.OnMoveMade -= UpdateMovesUI;
-        GameEvents.OnGoalTileChanged -= SetTargetUI;
-        GameEvents.OnGoalTileCountChanged -= UpdateTargetTileCount;
+        GameEvents.OnScoreChanged -= UpdateScoreUI;
+        GameEvents.OnGameStateChanged -= OnGameStateChanged;
     }
 
     private void UpdateMovesUI(int movesLeft)
@@ -31,15 +29,9 @@ public class UIManager : Singleton<UIManager>
         movesValueText.text = movesLeft.ToString();
     }
 
-    private void SetTargetUI(TileData targetTileData)
+    private void UpdateScoreUI(int currentScore)
     {
-        targetTileImage.sprite = targetTileData.tileSprite;
-    }
-
-
-    private void UpdateTargetTileCount(int remainingTargetCount)
-    {
-        targetTileCountText.text = remainingTargetCount < 0 ? "0" : remainingTargetCount.ToString();
+        scoreValueText.text = currentScore.ToString();
     }
 
     private void OnGameStateChanged(GameState state)
